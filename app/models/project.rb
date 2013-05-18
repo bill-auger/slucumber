@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
-  attr_accessible :notes , :client_id
+  attr_accessible :name , :notes , :client_id
   belongs_to :client
   has_many :events
+  validates_presence_of :name , :client_id
+  before_validation { self.notes ||= "" }
 end

@@ -1,3 +1,0 @@
-class Project < ActiveRecord::Base
-  attr_accessible :notes , :client_id
-end

@@ -1,4 +1,6 @@
 class Client < ActiveRecord::Base
-  attr_accessible :nick , :email , :lm , :notes
   has_many :projects
+  attr_accessible :nick , :lm , :email , :notes
+  validates_presence_of :nick
+  before_validation { self.lm ||= "" ; self.email ||= "" ; self.notes ||= "" ; }
 end

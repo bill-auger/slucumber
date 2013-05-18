@@ -1,0 +1,62 @@
+
+/* event map */
+
+WHEN ...
+initiator     trigger           receiver            receiver response
+the creator
+the owner
+group member
+any user
+any object
+local chat
+(user=)
+(object=)
+(bot=)
+(website=)
+
+(agent)       clicks            (obj=)
+(entity)      collides with     (obj= bot=)
+(entity)      colliding with    (obj= bot=)
+(entity)      detected by       (obj= bot=)
+(entity)      rezzes            (obj=)
+(entity)      gives (obj=) to   (obj= bot=)
+(messsager)   sends (msg=) to   (obj= bot= web=)
+(timer)       (timeout=)        self
+(stateful)    (state=)          no receiver
+AND ...
+
+                                                    THEN ...
+                                (stateless)         no output
+                                (obj= bot=)         scan for (event=)
+                                (obj= bot=)         listen for (event=)
+                                (obj= bot=)         give item to (event=)
+                                (obj=)              check email
+                                (bot=)              (click event=)
+                                                    (action=)
+                                                    (event=)
+
+                                                    AND ...
+
+NOTES "arbitrary notes per event" ...
+
+
+/* custom actors */
+events[] users[] objects[] bots[] websites[] msgs[] states[] actions[]
+msgs[] may optionally (inevitably will) be specific (chat im link http email)
+
+/* special initiator and receiver actor kinds and classes */
+an 'agent' is ANY user or bot
+an 'entity' is ANY inworld agent or object
+an 'messsager' initiator or receiver is ANY agent object or website (EVERY ACTOR)
+a 'timer' initiator is OUR object bot or web (self receiver)
+a 'stateful' initiator is OUR object bot or web (no receiver)
+a 'stateless' reciever is NOT OUR object bot or web
+
+/* special trigger actor kinds */
+a 'timer' trigger has itself as receiver
+a 'state' trigger has no receiver nor output - it must be a secondary condition associated with an external event
+a 'msg' trigger sent to receivers beyond our control (stateless) have no response actor
+
+/* special response actor kinds */
+actions[] are arbitrary 'none of the above' (most likely temporary)
+events[] are not actors objects but refer to and trigger other specific handled events

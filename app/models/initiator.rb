@@ -1,0 +1,2 @@
+class Initiator < Actor
+end
