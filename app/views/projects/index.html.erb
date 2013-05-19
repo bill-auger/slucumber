@@ -1,0 +1,16 @@
+<h2 id="projectsH2">My Slucumber Projects</h2>
+
+<table id="projectsTable">
+  <tr>
+    <td colspan="4"><%= button_to "Create new project" , new_project_path , :method => :get %></td>
+  </tr>
+  <% @projects.each do | project | %>
+    <tr>
+      <td><%= button_to project.name , project , :method => :get %></td>
+      <td class="projectDescTd"><%= project.desc %></td>
+      <td><%= button_to "Update" , edit_project_path(project) , :method => :get %></td>
+      <td><%= button_to "Destroy" , project , :method => :delete , :onclick => "return confirm('Are you sure?')" %></td>
+    </tr>
+  <% end %>
+
+</table>

@@ -1,0 +1,25 @@
+<%= form_for(@project) do | project_form | %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+      <ul><% @project.errors.full_messages.each do | msg | %><li><%= msg %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= button_tag "Cancel" , :type => 'button' , :onclick => "location.href = '#{projects_path}'" %>
+    <%= project_form.submit %>
+  </div>
+  <div class="field">
+    <%= project_form.label :name %><br />
+    <%= project_form.text_field :name , :autofocus => true %>
+  </div>
+  <div class="field">
+    <%= project_form.label :desc %><br />
+    <%= project_form.text_field :desc %>
+  </div>
+  <div class="field">
+    <%= project_form.label :notes %><br />
+    <%= project_form.text_area  :notes %>
+  </div>
+<% end %>

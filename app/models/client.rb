@@ -1,6 +1,14 @@
 class Client < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable , :registerable ,
+         :recoverable , :rememberable , :trackable , :validatable ,
+         :token_authenticatable , :confirmable , :lockable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email , :password , :password_confirmation , :remember_me
   has_many :projects
-  attr_accessible :nick , :lm , :email , :notes
-  validates_presence_of :nick
-  before_validation { self.lm ||= "" ; self.email ||= "" ; self.notes ||= "" ; }
+  attr_accessible :lm , :notes
+  before_validation { self.lm ||= "" ; self.notes ||= "" ; }
 end

@@ -1,4 +1,8 @@
 Slucumber::Application.routes.draw do
+  devise_for :clients
+  root :to => "projects#index"
+  resources :projects
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

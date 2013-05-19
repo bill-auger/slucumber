@@ -1,0 +1,18 @@
+
+<table><tr>
+  <td><%= button_to "Update" , edit_project_path(@project) , :method => :get %></td>
+  <td><%= button_to "My Projects" , projects_path , :method => :get %></td>
+</tr></table>
+
+<p>
+  <b>Project name:</b>
+  <%= @project.name %>
+</p>
+<p>
+  <b>Description:</b>
+  <%= @project.desc %>
+</p>
+<p>
+  <b>Notes:</b>
+  <%= @project.notes %>
+</p>

@@ -29,6 +29,7 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    bcrypt-ruby (3.0.1)
     builder (3.0.4)
     capybara (2.1.0)
       mime-types (>= 1.16)
@@ -53,6 +54,11 @@ GEM
       cucumber (>= 1.2.0)
       nokogiri (>= 1.5.0)
       rails (~> 3.0)
+    devise (2.2.4)
+      bcrypt-ruby (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (~> 3.1)
+      warden (~> 1.2.1)
     diff-lcs (1.2.3)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -78,6 +84,7 @@ GEM
     mime-types (1.23)
     multi_json (1.7.3)
     nokogiri (1.5.9)
+    orm_adapter (0.4.0)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -136,6 +143,8 @@ GEM
     uglifier (2.1.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    warden (1.2.1)
+      rack (>= 1.0)
     watchr (0.7)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
@@ -150,6 +159,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
   cucumber-rails
+  devise
   factory_girl_rails
   jquery-rails
   rails (= 3.2.11)

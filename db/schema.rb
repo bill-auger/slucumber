@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130518035033) do
+ActiveRecord::Schema.define(:version => 20130519084610) do
 
   create_table "actors", :force => true do |t|
     t.string   "name"
@@ -24,13 +24,35 @@ ActiveRecord::Schema.define(:version => 20130518035033) do
   end
 
   create_table "clients", :force => true do |t|
-    t.string   "nick"
-    t.string   "email"
+    t.string   "email",                  :default => "", :null => false
     t.string   "lm"
     t.text     "notes"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        :default => 0
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.string   "authentication_token"
   end
+
+  add_index "clients", ["authentication_token"], :name => "index_clients_on_authentication_token", :unique => true
+  add_index "clients", ["confirmation_token"], :name => "index_clients_on_confirmation_token", :unique => true
+  add_index "clients", ["email"], :name => "index_clients_on_email", :unique => true
+  add_index "clients", ["reset_password_token"], :name => "index_clients_on_reset_password_token", :unique => true
+  add_index "clients", ["unlock_token"], :name => "index_clients_on_unlock_token", :unique => true
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -46,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20130518035033) do
     t.integer  "client_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "desc"
   end
 
 end

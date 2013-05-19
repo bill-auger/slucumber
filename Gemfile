@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.11'
 gem 'sqlite3'
 gem 'jquery-rails'
+gem 'devise'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -19,8 +20,9 @@ group :development , :test do
 end
 
 group :test do
-	gem 'cucumber-rails' , :require => false
-	gem 'webrat'
-	gem 'factory_girl_rails'
-	gem 'watchr'
+  gem 'cucumber-rails' , :require => false
+  gem 'webrat'
+  gem 'factory_girl_rails'
+  Object.send :remove_const, :Config ; Config = RbConfig ; # kludge to supress warning
+  gem 'watchr'
 end
