@@ -1,6 +1,6 @@
 class AddDeviseToClients < ActiveRecord::Migration
   def change
-    change_column :clients , :email , :string , { :null => false, :default => "" }
+    change_column :clients , :email , :string , { :null => false , :default => SL_PROXY_EMAIL }
 
     change_table(:clients) do |t|
       ## Database authenticatable

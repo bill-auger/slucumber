@@ -1,6 +1,12 @@
 Slucumber::Application.routes.draw do
-  devise_for :clients
-  root :to => "projects#index"
+  authenticated :client do
+    root :to => "projects#index"
+  end
+  devise_scope :client do
+    root to: "devise/sessions#new"
+  end
+  devise_for :clients , :controllers => { :registrations => "registrations" }
+
   resources :projects
 
   # The priority is based upon order of creation:

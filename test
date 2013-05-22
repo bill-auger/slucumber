@@ -1,0 +1,3 @@
+"response=--- !ruby/object:ActionDispatch::TestResponse\nbody:
+
+header: !ruby/hash:Rack::Utils::HeaderHash\n  Content-Type: text/html; charset=utf-8\n  X-UA-Compatible: IE=Edge,chrome=1\n  ETag: ! '\"0c806ba65daba11f3a0557cd730261da\"'\n  Cache-Control: max-age=0, private, must-revalidate\n  X-Request-Id: !binary |-\n    MzFhNTYxNTBiNjgxYjBjZTI3NzlhMTgxOTQ0OGVkYzA=\n  X-Runtime: '1.537289'\n  Content-Length: '1649'\nstatus: 200\nsending_file: false\nblank: false\ncontent_type: !ruby/object:Mime::Type\n  synonyms:\n  - application/xhtml+xml\n  symbol: :html\n  string: text/html\ncharset: utf-8\ncache_control:\n  :max-age: '0'\n  :private: true\n  :must-revalidate: true\netag: ! '\"0c806ba65daba11f3a0557cd730261da\"'\n"

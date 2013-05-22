@@ -1,0 +1,28 @@
+<h2>Edit <%= resource_name.to_s.humanize %></h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div>Secondlife name<br />
+  <%= f.text_field :nick , :autofocus => true %></div>
+
+  <div>New Slucumber password <i>(leave blank if you don't want to change it)</i><br />
+  <%= f.password_field :password , :autocomplete => "off" %></div>
+
+  <div>New Slucumber password confirmation<br />
+  <%= f.password_field :password_confirmation , :autocomplete => "off" %></div>
+
+  <div id="editBtnsDiv">
+    <span><%= f.submit "Update changes" %></span>
+    <span><%= button_tag "Cancel changes" , :type => 'button' , :onclick => "location.href = '#{projects_path}'" %></span>
+  </div>
+<% end %>
+
+  <p>Unhappy?
+    <span><%= button_to "Delete my account" , registration_path(resource_name) , :method => :delete ,
+        :data => { :confirm => "This will also delete all of your Slucumber projects.\nAre you sure?" } %></span>
+  </p>

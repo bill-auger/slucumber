@@ -1,10 +1,12 @@
 body {
-  background-color: #fff;
-  color: #333;
+  background-color: #010 ;
+  color: #0f0 ;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
+
+input , button , textarea { background-color: #020 ; color: #0f0 ; }
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
@@ -19,13 +21,13 @@ pre {
 }
 
 a {
-  color: #000;
+  color: #0f0;
   &:visited {
-    color: #666;
+    color: #0f0;
   }
   &:hover {
-    color: #fff;
-    background-color: #000;
+    color: #8f8;
+    background-color: #020;
   }
 }
 

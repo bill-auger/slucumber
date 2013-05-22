@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_filter :authenticate_client!
 
   def index
     @projects = Project.where("client_id = ?" , current_client)

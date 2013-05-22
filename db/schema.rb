@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130519084610) do
+ActiveRecord::Schema.define(:version => 20130522130841) do
 
   create_table "actors", :force => true do |t|
     t.string   "name"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20130519084610) do
 
   create_table "clients", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
-    t.string   "lm"
+    t.string   "landmark"
     t.text     "notes"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
@@ -46,11 +46,12 @@ ActiveRecord::Schema.define(:version => 20130519084610) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
+    t.string   "nick",                                   :null => false
   end
 
   add_index "clients", ["authentication_token"], :name => "index_clients_on_authentication_token", :unique => true
   add_index "clients", ["confirmation_token"], :name => "index_clients_on_confirmation_token", :unique => true
-  add_index "clients", ["email"], :name => "index_clients_on_email", :unique => true
+  add_index "clients", ["nick"], :name => "index_clients_on_nick", :unique => true
   add_index "clients", ["reset_password_token"], :name => "index_clients_on_reset_password_token", :unique => true
   add_index "clients", ["unlock_token"], :name => "index_clients_on_unlock_token", :unique => true
 

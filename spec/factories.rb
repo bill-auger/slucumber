@@ -1,10 +1,10 @@
 FactoryGirl.define do
 
   factory(:client) do
-    email "addy@example.net"
+    nick "Fred Flintstone"
     password "letmein"
     password_confirmation "letmein"
-    confirmed_at Date.now
+    confirmed_at DateTime.new
   end
 
   factory(:project) do

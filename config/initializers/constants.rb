@@ -1,4 +1,6 @@
 
+## program constants ##
+
 # initiator and receiver builtin kinds
 CREATOR_KIND = 'object_creator'
 OWNER_KIND = 'object_owner'
@@ -24,5 +26,10 @@ CHECK_EMAIL_KIND = 'check_email'
 TIMER_KIND = 'timer'
 STATE_KIND = 'state'
 # actor classes
-ACTIONS_REQ_DATA = [ CHAT_KIND , LINKMSG_KIND , IM_KIND , HTTP_KIND , EMAIL_KIND , TIMER_KIND , STATE_KIND]
+ACTIONS_REQ_DATA = [CHAT_KIND , LINKMSG_KIND , IM_KIND , HTTP_KIND , EMAIL_KIND , TIMER_KIND , STATE_KIND]
 STATELESS_KINDS = [ANY_USER_KIND , ANY_OBJECT_KIND , LOCAL_CHAT]
+
+
+## app constants ##
+
+SL_PROXY_EMAIL = 'mr.j.spam.me@gmail.com' # inworld proxy object email

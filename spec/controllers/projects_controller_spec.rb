@@ -75,7 +75,7 @@ describe ProjectsController do
       it "re-renders the 'new' template" do
         Project.any_instance.stub(:save).and_return(false)
         post :create , { :project => {  } }
-        response.should render_template("new")
+        response.should render_template(:new)
       end
     end
   end
@@ -113,7 +113,7 @@ describe ProjectsController do
         project = Project.create! valid_attributes
         Project.any_instance.stub(:save).and_return(false)
         put :update , { :id => project.to_param , :project => {  } }
-        response.should render_template("edit")
+        response.should render_template(:edit)
       end
     end
   end

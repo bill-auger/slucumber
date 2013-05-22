@@ -2,8 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-body { background-color: #010 ; color: #0f0 ; }
-input , button , textarea { background-color: #020 ; color: #0f0 ; }
+body { font-family: Monospace ; }
+
 table#headerTable { width: 100% ; background-color: #020 ; color: #0f0 ; }
 td#lHeaderTd , td#loginTd { width: 25% ; }
 td#siteTitleTd { width: 50% ; text-align: center ; font-size: 2em ; }

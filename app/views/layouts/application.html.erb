@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Slucumber</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <meta name="viewport" content="width=device-width , initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Slucumber" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Slucumber" %>">
+    <%= stylesheet_link_tag "application" , :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+    <%= yield(:head) %>
+  </head>
 
-  <table id="headerTable">
-    <tr>
-      <td id="lHeaderTd"></td>
-      <td id="siteTitleTd">Slucumber</td>
-      <td id="loginTd">
-        <% if client_signed_in? %>
-          <%= current_client.email %>
-          <%= link_to('Logout', destroy_client_session_path , :method => :delete) %>
-        <% else %>
-          <%= link_to('Login' , new_client_session_path) %>
-        <% end %>
-      </td>
-    </tr>
-  </table>
+  <body class="<%= controller_name %> <%= action_name %>">
+    <div id="container" class="container">
 
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+      <header>
+        <%= render 'layouts/header' %>
+        <%= render 'layouts/messages' %>
+      </header>
 
-  <%= yield %>
+      <div id="main" role="main"><%= yield %></div>
 
-</body>
+      <footer></footer>
+
+    </div>
+  </body>
 </html>
