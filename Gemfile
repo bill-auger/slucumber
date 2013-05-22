@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
-gem 'sqlite3'
 gem 'jquery-rails'
 gem 'devise'
 
@@ -15,8 +14,9 @@ end
 
 
 group :development , :test do
-	gem 'spork'
-	gem 'rspec-rails'
+  gem 'sqlite3'
+  gem 'spork'
+  gem 'rspec-rails'
 end
 
 group :test do
@@ -25,5 +25,9 @@ group :test do
   gem 'factory_girl_rails'
   Object.send :remove_const, :Config ; Config = RbConfig ; # kludge to supress warning
   gem 'watchr'
-	gem 'database_cleaner'
+  gem 'database_cleaner'
+end
+
+group :production do
+  gem 'pg'
 end
