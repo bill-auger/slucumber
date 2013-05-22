@@ -23,7 +23,7 @@ group :test do
   gem 'cucumber-rails' , :require => false
   gem 'webrat'
   gem 'factory_girl_rails'
-  Object.send :remove_const, :Config ; Config = RbConfig ; # kludge to supress warning
+#  Object.send :remove_const, :Config ; Config = RbConfig ; # kludge to supress warning
   gem 'watchr'
   gem 'database_cleaner'
 end
