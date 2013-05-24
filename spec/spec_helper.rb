@@ -4,6 +4,10 @@ require 'spork'
 #require 'spork/ext/ruby-debug'
 
 Spork.prefork do
+  require "rails/all"
+  Spork.trap_method(Rails::Application, :reload_routes!)
+  Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+
 	# This file is copied to spec/ when you run 'rails generate rspec:install'
 	ENV["RAILS_ENV"] ||= 'test'
 	require File.expand_path("../../config/environment", __FILE__)
@@ -50,5 +54,9 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
+=begin
+  require 'factory_girl_rails'
+  FactoryGirl.definition_file_paths = [ File.join(Rails.root, 'spec', 'factories') ]
+  FactoryGirl.find_definitions
+=end
 end

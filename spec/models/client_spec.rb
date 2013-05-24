@@ -115,7 +115,7 @@ describe Client do
 
       it "should set the internal email attribute" do
         @a_client.should respond_to(:email)
-        @a_client.email.should == SL_PROXY_EMAIL
+        @a_client.email.should == @a_client.nick + BOGUS_EMAIL
       end
 
       it "should set the internal encrypted_password attribute" do

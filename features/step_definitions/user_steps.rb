@@ -221,6 +221,10 @@ Then /^I should see an account edited message$/ do
 #   but that wont be possible until we override Devise to use nick instead of email
 end
 
+Then /^I should see an account edited but unconfirmed message$/ do
+  page.should have_content I18n.t('devise.registrations.update_needs_confirmation')
+end
+
 Then /^I should see an account deleted message$/ do
   page.should have_content I18n.t('devise.registrations.destroyed')
 end

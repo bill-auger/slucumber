@@ -1,0 +1,5 @@
+<%= @client.nick %>
+
+You can confirm your account email using the link below:
+
+<%= confirmation_url(@client , { :confirmation_token => @client.confirmation_token }) %>

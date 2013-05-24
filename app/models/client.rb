@@ -6,27 +6,33 @@ class Client < ActiveRecord::Base
          :recoverable , :rememberable , :trackable ,
          :token_authenticatable , :confirmable , :lockable
 
-  attr_accessible :nick , :password , :password_confirmation , :remember_me , :email
-  attr_accessible :landmark , :notes
+  attr_accessible :nick , :password , :password_confirmation , :landmark , :notes
+  attr_accessible :remember_me , :email , :unconfirmed_email , :previous_nick
   validates_uniqueness_of :nick , { :case_sensitive => false }
   validates_presence_of :nick # TODO: Devise should handle this
   validates_presence_of :password , :password_confirmation , { :on => :create }
   validates_confirmation_of :password
   validates_length_of :password , { :within => Devise.password_length , :on => :create }
-  before_validation :validate
-
-  # NOTE: this will require several Devise methods to be overridden - we punt for now
-  #   but we maybe able to trigger reconfirmation on changes to the nick field instead
-  #   keeping the email column internally (all set to SL_PROXY_EMAIL) or lose it completely
-  #   also i think reconfirmation will not work until we do so
-  def email_required? ; false ; end ;
-  def validate()
-    # NOTE: we EVENTUALLY WANT TO BE sending all email to our inworld object
-    #   to relay the confirmation links to the client
-    #   but devise requires the email field for confirmable and recoverable
-    #   we will set the email field to SL_PROXY_EMAIL for now but we may need tp
-    #   use the email field to hold the client's SL nick instead nick@SL_PROXY_EMAIL
+  before_validation do
+    # NOTE: we send all confirmation email to our inworld object to relay to the client
+    #   but devise requires the email field to change for confirmable and recoverable
     self.nick = self.nick.delete('^A-Za-z0-9 .').gsub(' ' , '.') unless self.nick.nil?
-    self.email = SL_PROXY_EMAIL ; self.landmark ||= "" ; self.notes ||= "" ;
+    self.email = self.unconfirmed_email = self.nick + BOGUS_EMAIL unless self.nick.blank?
+    self.landmark ||= "" ; self.notes ||= "" ; self.previous_nick || "" ;
   end
+
+
+  module Devise::Models::Confirmable
+    def send_on_create_confirmation_instructions # on create
+      SlMailer.sl_email(self).deliver
+    end
+
+    def send_confirmation_instructions # on update
+      self.confirmation_token = nil if reconfirmation_required?
+      @reconfirmation_required = false
+      generate_confirmation_token! if self.confirmation_token.blank?
+      SlMailer.sl_email(self).deliver
+    end
+  end
+
 end

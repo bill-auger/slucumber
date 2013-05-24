@@ -5,7 +5,7 @@
     <td id="siteTitleTd">Slucumber</td>
     <td id="loginTd">
       <% if client_signed_in? %>
-        <%= current_client.nick %>
+        <%= current_client.nick.gsub('.' , ' ') %>
         <%= link_to 'Settings' , edit_client_registration_path %>
         <%= link_to('Logout' , destroy_client_session_path , :method => :delete) %>
       <% else %>

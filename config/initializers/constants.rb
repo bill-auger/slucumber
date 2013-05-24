@@ -32,4 +32,7 @@ STATELESS_KINDS = [ANY_USER_KIND , ANY_OBJECT_KIND , LOCAL_CHAT]
 
 ## app constants ##
 
+BOGUS_EMAIL = '@example.net' # so that Client email field will validate
+NOREPLY_EMAIL = 'noreply@example.net' # default email from:
 SL_PROXY_EMAIL = 'mr.j.spam.me@gmail.com' # inworld proxy object email
+CONFIRMATION_EMAIL_SUBJECT = 'client_email_confirmation'
