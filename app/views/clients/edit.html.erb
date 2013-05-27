@@ -1,0 +1,46 @@
+<h2 id="clientH2"><%= @client.nick %><br />
+  <%= button_to "Destroy Client" , @client , { :onclick => "return confirm('Are you sure?')" , :method => :delete } %></h2>
+
+
+<h2 id="projectsH2"><b><%= @client.projects.size.to_s %> Projects</b></h2>
+<table id="adminClientProjectsTable">
+  <% unless @client.projects.size.zero? %>
+    <th id="projectsNameTh"><b>Project name:</b></td>
+    <th id="projectsDestroyTh"></th>
+    <th id="projectsDescriptionTh"><b>Description:</b></td>
+  <% end %>
+  <% @client.projects.each do | project | %>
+    <tr>
+      <td><%= button_to project.name , project_path(project) , :method => :get %></td>
+      <td><%= button_to "Destroy " + project.name , project , { :onclick => "return confirm('Are you sure?')" , :method => :delete  } %></td>
+      <td><%= project.desc %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p></p>
+
+<%= form_for(@client) do | client_form | %>
+  <% if @client.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@client.errors.count, "error") %> prohibited this client from being updated:</h2>
+      <ul><% @client.errors.full_messages.each do | msg | %><li><%= msg %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+<!--    <%= button_tag "Back" , :type => 'button' , :onclick => "location.href = '#{clients_path}'" %>-->
+    <a href="<% clients_path %>"><%= button_tag "Back" %></a>
+    <%= client_form.submit %>
+  </div>
+  <table id="adminEditClientTable" class="field">
+    <tr>
+      <td><%= client_form.label :nick %><%= client_form.text_field :nick , { :disabled => true } %></td>
+      <td><%= client_form.label :landmark %><%= client_form.text_field :landmark %></td>
+      <td>Admin?<%= client_form.check_box :is_admin %></td>
+      <td id="adminEditClientPadTd">&nbsp;</td>
+    </tr>
+    <th colspan="4"><%= client_form.label :notes %></th>
+    <tr><td colspan="4"><%= client_form.text_area :notes , { :autofocus => true } %></td></tr>
+  </table>
+<% end %>

@@ -78,14 +78,9 @@ describe Client do
   end
 
   describe "attributes" do
-    describe "with full params" do
+    describe "with minimal params" do
       before do
-        @a_client = Client.create(@full_params)
-      end
-
-      it "should create a Client with all fields set when given full params" do
-        @a_client.should be_kind_of(Client)
-        @a_client.should be_persisted
+        @a_client = Client.create(@minimal_params)
       end
 
       it "should set the nick attribute" do
@@ -103,14 +98,14 @@ describe Client do
         @a_client.password_confirmation.should == @a_password_confirmation
       end
 
-      it "should set the landmark attribute" do
+      it "should set the landmark attribute to the empty string" do
         @a_client.should respond_to(:landmark)
-        @a_client.landmark.should == @a_lm
+        @a_client.landmark.should == ""
       end
 
-      it "should set the notes attribute" do
+      it "should set the notes attribute to the empty string" do
         @a_client.should respond_to(:notes)
-        @a_client.notes.should == @some_notes
+        @a_client.notes.should == ""
       end
 
       it "should set the internal email attribute" do
@@ -122,22 +117,45 @@ describe Client do
         @a_client.should respond_to(:encrypted_password)
         @a_client.encrypted_password.should_not be_blank
       end
+
+      it "(db) should set the internal is_admin false" do
+        @a_client.should respond_to(:is_admin)
+        @a_client.is_admin.should be(false)
+      end
     end
 
-    describe "with minimal params" do
+    describe "with full params" do
       before do
-        @a_client = Client.create(@minimal_params)
+        @a_client = Client.create(@full_params)
       end
 
-      it "should set the landmark attribute to the empty string" do
+      it "should create a Client when given full params" do
+        @a_client.should be_kind_of(Client)
+        @a_client.should be_persisted
+      end
+
+      it "should set the landmark attribute" do
         @a_client.should respond_to(:landmark)
-        @a_client.landmark.should == ""
+        @a_client.landmark.should == @a_lm
       end
 
-      it "should set the notes attribute to the empty string" do
+      it "should set the notes attribute" do
         @a_client.should respond_to(:notes)
-        @a_client.notes.should == ""
+        @a_client.notes.should == @some_notes
       end
+    end
+
+  end
+
+  describe "associations" do
+    before do
+      @a_client = Client.create(@minimal_params)
+    end
+
+    it "should be associated with projects" do
+      @a_client.should respond_to(:projects)
+      @a_client.projects.size.should be(0)
+      @a_client.is_admin.should be(false)
     end
   end
 end

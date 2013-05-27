@@ -1,13 +1,19 @@
 Slucumber::Application.routes.draw do
+
   authenticated :client do
-    root :to => "projects#index"
+    root :to => 'projects#index'
   end
   devise_scope :client do
-    root to: "devise/sessions#new"
+    root to: 'devise/sessions#new'
+    get '/signup' => 'devise/registrations#new'
+    get '/login' => 'devise/sessions#new'
+    get '/settings' => 'devise/registrations#edit'
+    delete '/logout' => 'devise/sessions#destroy'
   end
-  devise_for :clients , :controllers => { :registrations => "registrations" }
+  devise_for :clients , :controllers => { :registrations => 'registrations' }
+  resources :projects #clients
 
-  resources :projects
+  resources :clients # admins
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

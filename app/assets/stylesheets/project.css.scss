@@ -4,11 +4,6 @@
 
 body { font-family: Monospace ; }
 
-table#headerTable { width: 100% ; background-color: #020 ; color: #0f0 ; }
-td#lHeaderTd , td#loginTd { width: 25% ; }
-td#siteTitleTd { width: 50% ; text-align: center ; font-size: 2em ; }
-td#loginTd { white-space: nowrap ; text-align: right ; vertical-align: bottom ; }
-
 h2#projectsH2 { text-align: center ; }
 
 table#projectsTable , td.projectDescTd { width: 100% ; }

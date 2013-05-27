@@ -9,7 +9,6 @@ class RegistrationsController < Devise::RegistrationsController
     # try update
     @client = Client.find(current_client.id)
     has_nick_changed = (params[:client][:nick] != @client.nick)
-    params[:client][:previous_nick] = @client.nick if has_nick_changed
     render "edit" and return unless @client.update_attributes(params[:client])
 
     # sign in the client bypassing validation

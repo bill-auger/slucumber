@@ -1,7 +1,11 @@
 
 <table><tr>
   <td><%= button_to "Update" , edit_project_path(@project) , :method => :get %></td>
-  <td><%= button_to "My Projects" , projects_path , :method => :get %></td>
+  <% if current_client.is_admin %>
+    <td><%= button_to @project.client.nick + " Projects" , edit_client_path(@project.client) , :method => :get %></td>
+  <% else %>
+    <td><%= button_to "My Projects" , projects_path , :method => :get %></td>
+  <% end %>
 </tr></table>
 
 <p>

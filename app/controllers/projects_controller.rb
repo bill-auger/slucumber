@@ -1,5 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :authenticate_client!
+  before_filter :redirect_admin , :only => :index
+  def redirect_admin ; redirect_to clients_path if current_client.is_admin ; end ;
 
   def index
     @projects = Project.where("client_id = ?" , current_client)

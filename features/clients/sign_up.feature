@@ -6,8 +6,8 @@ Feature: Sign up
     Background:
       Given I am not logged in
 
-    Scenario: Client signs up with valid data
-      When I sign up with valid client data
+    Scenario: Client signs up with valid client credentials
+      When I sign up with valid client credentials
       Then I should see a successful sign up but unconfirmed message
 
     Scenario: Client signs up without a nick

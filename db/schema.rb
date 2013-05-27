@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130524181647) do
+ActiveRecord::Schema.define(:version => 20130526070520) do
 
   create_table "actors", :force => true do |t|
     t.string   "name"
@@ -23,13 +23,20 @@ ActiveRecord::Schema.define(:version => 20130524181647) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "admins", :force => true do |t|
+    t.string   "email"
+    t.string   "encrypted_password"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
   create_table "clients", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
     t.string   "landmark"
     t.text     "notes"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -46,8 +53,8 @@ ActiveRecord::Schema.define(:version => 20130524181647) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.string   "nick",                                   :null => false
-    t.string   "previous_nick"
+    t.string   "nick",                                      :null => false
+    t.boolean  "is_admin",               :default => false, :null => false
   end
 
   add_index "clients", ["authentication_token"], :name => "index_clients_on_authentication_token", :unique => true

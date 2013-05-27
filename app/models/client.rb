@@ -7,9 +7,9 @@ class Client < ActiveRecord::Base
          :token_authenticatable , :confirmable , :lockable
 
   attr_accessible :nick , :password , :password_confirmation , :landmark , :notes
-  attr_accessible :remember_me , :email , :unconfirmed_email , :previous_nick
+  attr_accessible :remember_me , :email , :unconfirmed_email , :is_admin
   validates_uniqueness_of :nick , { :case_sensitive => false }
-  validates_presence_of :nick # TODO: Devise should handle this
+  validates_presence_of :nick
   validates_presence_of :password , :password_confirmation , { :on => :create }
   validates_confirmation_of :password
   validates_length_of :password , { :within => Devise.password_length , :on => :create }
@@ -18,7 +18,7 @@ class Client < ActiveRecord::Base
     #   but devise requires the email field to change for confirmable and recoverable
     self.nick = self.nick.delete('^A-Za-z0-9 .').gsub(' ' , '.') unless self.nick.nil?
     self.email = self.unconfirmed_email = self.nick + BOGUS_EMAIL unless self.nick.blank?
-    self.landmark ||= "" ; self.notes ||= "" ; self.previous_nick || "" ;
+    self.landmark ||= "" ; self.notes ||= "" ;
   end
 
 
@@ -34,5 +34,4 @@ class Client < ActiveRecord::Base
       SlMailer.sl_email(self).deliver
     end
   end
-
 end

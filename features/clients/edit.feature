@@ -10,7 +10,7 @@ Feature: Edit Client
     Given I am logged in
     When I change my name
     Then I should see an account edited but unconfirmed message
-      And my name should be the new name
+      And my name should not be changed yet
 
   Scenario: I log in and change my password
     Given I am logged in
@@ -22,7 +22,7 @@ Feature: Edit Client
     Given I am logged in
     When I change my name and password
     Then I should see an account edited but unconfirmed message
-      And my name should be the new name
+      And my name should not be changed yet
       And my password should be the new password
 
   Scenario: I log in and delete my account

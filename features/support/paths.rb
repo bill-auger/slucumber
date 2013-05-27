@@ -12,10 +12,22 @@ module NavigationHelpers
       '/clients/sign_up'
 
     when /Login/
-      '/clients/sign_in'
+      '/' # '/clients/sign_in'
 
     when /My Projects/
-      '/projects'
+      '/' # '/projects'
+
+    when /Clients/
+      '/clients'
+
+    when /Landmark/
+      '/' # cheating
+
+    when /Edit Client (.*)/i
+      '/clients/' + $1 + '/edit'
+
+    when /Project (.*)/i
+      '/projects/' + $1
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

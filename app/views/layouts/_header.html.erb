@@ -5,12 +5,17 @@
     <td id="siteTitleTd">Slucumber</td>
     <td id="loginTd">
       <% if client_signed_in? %>
-        <%= current_client.nick.gsub('.' , ' ') %>
-        <%= link_to 'Settings' , edit_client_registration_path %>
-        <%= link_to('Logout' , destroy_client_session_path , :method => :delete) %>
+        <% nick = current_client.nick.gsub('.' , ' ') %>
+        <% if (current_client.is_admin) %>
+          <span class="adminLogin"><%= nick %></span>
+        <% else %>
+          <%= nick %>
+        <% end %>
+        <%= link_to 'Settings' , '/settings' %>
+        <%= link_to('Logout' , '/logout' , :method => :delete) %>
       <% else %>
-        <%= link_to('Login' , new_client_session_path) %>
-        <%= link_to 'Sign up' , new_client_registration_path %>
+        <%= link_to('Login' , '/login') %>
+        <%= link_to 'Sign up' , '/signup' %>
       <% end %>
     </td>
   </tr>

@@ -1,10 +1,17 @@
 FactoryGirl.define do
 
   factory(:client) do
-    nick "Fred Flintstone"
+    sequence(:nick) { | n | "Client ##{n}" }
     password "letmein"
     password_confirmation "letmein"
     confirmed_at DateTime.new
+
+    factory :client_with_projects do
+      ignore { n_projects 1 }
+      after(:create) do | client , evaluator |
+        FactoryGirl.create_list(:project , evaluator.n_projects , { :client => client })
+      end
+    end
   end
 
   factory(:project) do

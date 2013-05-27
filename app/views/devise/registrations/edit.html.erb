@@ -17,12 +17,12 @@
   <%= f.password_field :password_confirmation , :autocomplete => "off" %></div>
 
   <div id="editBtnsDiv">
-    <span><%= f.submit "Update changes" %></span>
-    <span><%= button_tag "Cancel changes" , :type => 'button' , :onclick => "location.href = '#{projects_path}'" %></span>
+    <span><%= f.submit "Update Changes" %></span>
+    <span><%= button_tag "Cancel Changes" , :type => 'button' , :onclick => "location.href = '#{projects_path}'" %></span>
   </div>
 <% end %>
 
   <p>Unhappy?
-    <span><%= button_to "Delete my account" , registration_path(resource_name) , :method => :delete ,
+    <span><%= button_to "Delete My Account" , registration_path(resource_name) , :method => :delete ,
         :data => { :confirm => "This will also delete all of your Slucumber projects.\nAre you sure?" } %></span>
   </p>
