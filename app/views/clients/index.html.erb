@@ -3,18 +3,20 @@
 <table id="clientsTable">
   <th id="clientLoginTh">Nick</th>
   <th id="clientLandmarkTh">Landmark</th>
+  <th id="clientNProjectsTh"># Projects</th>
   <th id="clientNotesTh">Notes</th>
-  <% @clients.each do | client | ; next if client == current_client %>
+  <% @clients.each_with_index do | client , i | %>
     <tr>
-      <% curr_nick = client.email.split('@').first ; new_nick = client.nick ; %>
-      <% nick = (new_nick == curr_nick)? curr_nick : curr_nick + " (" + new_nick + ")"%>
       <td class="clientLoginTd">
-        <%= button_to nick , edit_client_url(client) , { :class => ((client.is_admin)? 'adminLogin' : '') , :method => :get } %>
+        <% css_class = (client.is_admin)? 'adminLogin' : '' %>
+        <% css_class = css_class + ' fillTd' unless client === @longest_named_client %>
+        <%= button_to @display_nicks[i] , edit_client_url(client) , { :class => css_class.lstrip , :method => :get } %>
       </td>
       <td class="clientLandmarkTd">
         <% landmark_btn = button_to client.landmark , client.landmark , { :method => :get } %>
         <%= (client.landmark.empty?)? '' : landmark_btn %>
       </td>
+      <td class="clientNProjectsTd"><%= client.projects.size.to_s + " Projects" %></td>
       <td class="clientNotesTd"><%= client.notes %></td>
     </tr>
   <% end %>

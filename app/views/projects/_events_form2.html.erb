@@ -1,0 +1,123 @@
+:)
+<%= nested_form_for @project , :remote => true , :html => { 'data-type' => 'script' } do | project_form | %>
+
+  <div id="projectEditBtnsDiv" class="actions">
+    <%= submit_tag "Cancel" %>
+    <%= project_form.submit %>
+  </div>
+
+  <table id="project_events">
+<% n = 0 ; print "\nproject (" + n.to_s + ")\n" %>
+    <%= project_form.fields_for :events , :wrapper => false do | event_builder | %>
+<% print "\nevent (" + (n = n + 1).to_s + ")\n" %>
+      <% event = event_builder.object %>
+<% print "\n\"_events_form.html.rb event.id='" + ((event)? event.id.to_s + "' new_record?=" + event.new_record?.to_s : "nil'") + "\"\n" %>
+<% p "_events_form.html.rb " + event.initiator.class.to_s + ".event_id=" + ((event && event.initiator)? event.initiator.event_id.to_s : "nil") %>
+<% p "_events_form.html.rb event.notes=" + event.notes.to_s + ((event.notes)? event.notes.size.to_s : 'nil') %>
+<% p "_events_form.html.rb event.valid?=" + event.valid?.to_s %>
+<% actor = nil %>
+<% if false %>
+<% initiator = event.initiator %>
+<% trigger = event.trigger %>
+<% receiver = event.receiver %>
+<% response = event.response %>
+<% elsif false %>
+<% initiator = event.build_initiator() %>
+<% trigger = event.build_trigger() %>
+<% receiver = event.build_receiver() %>
+<% response = event.build_response() %>
+<% elsif true %>
+<% initiator = event.initiator ||= event.build_initiator() %>
+<% trigger = event.trigger ||= event.build_trigger() %>
+<% receiver = event.receiver ||= event.build_receiver() %>
+<% response = event.response ||= event.build_response() %>
+<% elsif false %>
+<% event.tag = 'Tag:' if event.tag.blank? %>
+<% initiator = event.initiator ||= Initiator.new() %>
+<% trigger = event.trigger ||= Trigger.new() %>
+<% receiver = event.receiver ||= Receiver.new() %>
+<% response = event.response ||= Response.new() %>
+<% p "_events_form.html.rb Initiator.new.valid?=" + initiator.valid?.to_s %>
+<% end %>
+<% p "_events_form.html.rb initiator=" + ((initiator.nil?)? 'nil' : initiator.id.to_s) + " trigger=" + ((trigger.nil?)? 'nil' : trigger.id.to_s) + " receiver=" + ((receiver.nil?)? 'nil' : receiver.id.to_s) + " response=" + ((response.nil?)? 'nil' : response.id.to_s) %>
+
+      <tr class="fields projectEventTr">
+        <td class="projectEventRemoveTd">
+          <table class="projectEventControlsTable">
+            <tr><td>
+              <%= event_builder.hidden_field :id %> <!-- table must include this somewhere -->
+              <%= event_builder.link_to_remove(:class => "remove_event" , :href => "#" , :confirm => "Are you sure?") do %>
+                <% btn = "X" + ((current_client.is_admin && event.id)? " (" + event.id.to_s + ")" : "") %>
+                <%= button_tag btn , :type => 'button' %><% end %></td></tr>
+            <tr><td><%= button_tag '^' , :type => 'button' %></td></tr>
+            <tr><td><%= button_tag 'v' , :type => 'button' %></td></tr>
+          </table>
+        <td class="projectEventContainerTd">
+          <table class="projectEventTagTable">
+            <tr>
+                <td class="projectEventTagLblTd">Tag:</td>
+                <td class="projectEventTagTd">
+                  <% onchange = "
+                      var tagTextDiv = this.parentNode ;
+                      var tagBtnDiv = tagTextDiv.parentNode.children[1] ;
+                      var tagBtn = tagBtnDiv.children[0] ;
+console.log('this.id=' + tagBtn.innerHTML) ;
+                      tagBtn.innerHTML = this.value ;
+                      tagTextDiv.style.display = 'none' ;
+                      tagBtnDiv.style.display = 'block' ;" %>
+                  <% onclick = "
+                      var tagBtnDiv = this.parentNode ;
+                      var tagTextDiv = tagBtnDiv.parentNode.children[0] ;
+                      tagBtnDiv.style.display = 'none' ;
+                      tagTextDiv.style.display = 'block' ;" %>
+                  <div class="eventTagTextDiv"><%= event_builder.text_field :tag , { :onchange => onchange } %></div>
+                  <div class="eventTagBtnDiv"><%= button_tag event.tag , { :type => 'button' , :onclick => onclick } %></div>
+                </td>
+                <td class="projectEventNotesLblTd">Notes:</td>
+                <td class="projectEventNotesTd"><%= event_builder.text_field :notes , { :onchange => onchange } %></td>
+            </tr>
+          </table>
+          <table class="projectEventActorsTable"><tr>
+
+        <td class="projectEventInitiatorTd">
+  <% (actor = initiator) %>
+  <%= event_builder.fields_for :initiator , :wrapper => false do | initiator_builder | %>
+    <%= render 'actor_fields' , :event_builder => initiator_builder , :actor_class => 'Initiator' %>
+  <% end %>
+        </td>
+        <td class="projectEventTriggerTd">
+  <% (actor = trigger) %>
+  <%= event_builder.fields_for :trigger , :wrapper => false do | trigger_builder | %>
+    <%= render 'actor_fields' , :event_builder => trigger_builder , :actor_class => 'Trigger' %>
+  <% end %>
+          </td>
+        <td class="projectEventReceiverTd">
+  <% (actor = receiver) %>
+  <%= event_builder.fields_for :receiver , :wrapper => false  do | receiver_builder | %>
+    <%= render 'actor_fields' , :event_builder => receiver_builder , :actor_class => 'Receiver' %>
+  <% end %>
+          </td>
+        <td class="projectEventResponseTd">
+  <% (actor = response) %>
+  <%= event_builder.fields_for :response , :wrapper => false do | response_builder| %>
+    <%= render 'actor_fields' , :event_builder => response_builder , :actor_class => 'Response' %>
+  <% end %>
+        </td>
+
+            </tr>
+          </table>
+        </td>
+
+      </tr>
+      <tr class="projectEventSpacerTr"><td colspan="2">&nbsp;</td></tr>
+    <% end %>
+
+    <tr><td><%= project_form.link_to_add :events , :class => "add_nested_fields" do %>
+      <%= button_tag "+" , :type => 'button' %><% end %></td>
+      <td></td><td></td><td></td><td></td><td></td>
+    </tr>
+  </table>
+
+  <div class="field">Notes:<br /><%= project_form.text_area :notes %></div>
+
+<% end %>

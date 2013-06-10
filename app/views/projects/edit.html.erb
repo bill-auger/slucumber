@@ -1,3 +1,79 @@
-<h1><%= @project.name  %></h1>
+<h1 id="projectH1"><%= @project.name + " (" + @project.id.to_s + ")" %></h1>
+<h3 id="projectH3"><%= @project.desc %></h3>
 
-<%= render 'form' %>
+
+<%= render 'events_form' %>
+
+
+<script type="text/javascript">
+
+/* nested forms */
+
+window.NestedFormEvents.prototype.insertFields = function(content, assoc, link)
+  { return $(content).insertBefore($(link).closest('tr')) ; }
+
+
+/* event actors */
+var ACTOR_MAP = <%= raw ACTOR_MAP.to_json %> ;
+var ACTORS_REQUIRING_DATA = <%= raw ACTORS_REQUIRING_DATA.to_json %> ;
+//for (var k in ACTOR_MAP) for (var kk in ACTOR_MAP[k]) document.write("ACTOR_MAP[" + k + "][" + kk + "]=" + ACTOR_MAP[k][kk] + "<br />") ;
+var N_ACTOR_TDS = 6 ;
+var ACTOR_TD_CLASSES = ['projectEventRemoveTd' , 'projectEventTagTd' , 'projectEventInitiatorTd' , 'projectEventTriggerTd' , 'projectEventReceiverTd' , 'projectEventResponseTd'] ;
+var ACTOR_MAP_KEYS = ['nil' , 'nil' , 'initiators' , 'triggers' , 'receivers' , 'responses'] ;
+
+
+function validateActor(kindSelect)
+{
+  var kind = kindSelect.value ;
+console.log("\n\nkindSelect.value='" + kind + "'") ;
+  var thisTd = kindSelect.parentNode ;
+  var thisTdIdx = ACTOR_TD_CLASSES.indexOf(thisTd.className) ;
+console.log("thisTdIdx=" + thisTdIdx + " thisTd.id=" + thisTd.className) ;
+
+  // validate data field
+  var isDataRequired = (!!~ACTORS_REQUIRING_DATA.indexOf(kind)) ;
+//  var tdN = N_ACTOR_TDS ; var data ; while (tdN-- > thisTdIdx)
+  var dataInput = showHideInputsAndGetData(thisTd , isDataRequired) ;
+  var isDataSatisfied = (!isDataRequired || dataInput.value != "") ;
+  dataInput.style.border = (isDataSatisfied)? 'none' : '1px solid #f00' ;
+  dataInput.style.backgroundColor = (isDataSatisfied)? '#020' : '#400' ;
+
+  if (thisTdIdx >= N_ACTOR_TDS - 1) return ;
+
+  // populate next select based on this selected option
+  var nextTdIdx ; var nextTd = thisTd.parentNode.cells.item(nextTdIdx = thisTdIdx + 1) ;
+  var nextSelect = nextTd.getElementsByTagName('select')[0] ;
+console.log("nextKey=" + ACTOR_MAP_KEYS[nextTdIdx]) ;
+console.log("nextTd=" + nextTd) ;
+console.log("nextSelect=" + nextSelect) ;
+  var nextOptions = nextSelect.options ;
+  var selectedIdx = nextSelect.selectedIndex ;
+  var selectedOption = nextOptions[selectedIdx].value ;
+console.log("selectedOption=" + selectedOption) ;
+  var nextActorMap = ACTOR_MAP[ACTOR_MAP_KEYS[nextTdIdx]] ;
+  var optionsData = (nextActorMap.hasOwnProperty(kind))? nextActorMap[kind] : [] ;
+//for (var k in ACTOR_MAP[ACTOR_MAP_KEYS[nextTdIdx]]) console.log("kind[" + k + "]=" + ACTOR_MAP[ACTOR_MAP_KEYS[nextTdIdx]][k]) ;
+optionsData.forEach(function(ea) { console.log("option=" + ea) ; }) ;
+  while (nextOptions.length > 1) nextSelect.remove(nextOptions.length - 1) ;
+  optionsData.forEach(function(kind)
+    { nextSelect.add(new Option(kind , kind) , null) ; }) ;
+
+  // re-select current option if available or invalidate
+  if (!~optionsData.indexOf(selectedOption)) validateActor(nextSelect) ;
+  else nextOptions[selectedIdx].selected = true ;
+}
+
+function showHideInputsAndGetData(aTd , shouldShow)
+{
+  var inputsDiv = aTd.getElementsByTagName('div')[0] ;
+  var inputs = aTd.getElementsByTagName('input') ;
+  var tagInput = inputs[0] ; var dataInput = inputs[1] ;
+console.log("tagInput.value='" + tagInput.value + "'" + " dataInput.value='" + dataInput.value + "'") ;
+  tagInput.value = (shouldShow)? tagInput.value : "" ;
+  dataInput.value = (shouldShow)? dataInput.value : "" ;
+  inputsDiv.style.visibility = (shouldShow)? 'visible' : 'hidden' ;
+
+  return dataInput ;
+}
+
+</script>

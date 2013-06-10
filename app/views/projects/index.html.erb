@@ -1,12 +1,19 @@
 <h2 id="projectsH2">My Slucumber Projects</h2>
 
 <table id="projectsTable">
-  <tr>
-    <td colspan="4"><%= button_to "Create new project" , new_project_path , :method => :get %></td>
-  </tr>
+  <% is_new_name_longest = (new_name = "Create New Project").size > @longest_name.size %>
+  <% @longest_name = new_name if is_new_name_longest %>
+  <% btn_params = { :class => ((is_new_name_longest)? '' : 'fillTd') , :method => :get } %>
+  <tr><td><%= button_to new_name , new_project_path , btn_params %></td><td></td><td></td><td></td></tr>
   <% @projects.each do | project | %>
     <tr>
-      <td><%= button_to project.name , project , :method => :get %></td>
+      <td class="projectNameTd">
+        <% css_class = ((project.name == @longest_name)? '' : 'fillTd') %>
+        <%= button_to project.name , project , { :class => css_class , :method => :get } %>
+      </td>
+
+<td class="admin">(<%= (current_client.is_admin)? project.id.to_s : "" %>)</td>
+
       <td class="projectDescTd"><%= project.desc %></td>
       <td><%= button_to "Update" , edit_project_path(project) , :method => :get %></td>
       <td><%= button_to "Destroy" , project , { :onclick => "return confirm('Are you sure?')" , :method => :delete  } %></td>

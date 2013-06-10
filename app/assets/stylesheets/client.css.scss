@@ -2,15 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#clientH2 { text-align: center ; }
-#clientsTable , #clientsTable input { width: 100% ; }
-#clientLoginTh { width: 200px ; }
-#clientLandmarkTh { width: 100px ; }
+#clientsH2 { text-align: center ; }
+#clientsTable { width: 100% ; }
+#clientsTable td { padding: 5px ; }
+.clientNProjectsTd { white-space: nowrap ; }
+.clientNotesTd { width: 100% ; overflow: hidden ; }
+
+#clientH2 , #adminEditClientBtns { text-align: center ; }
+#adminEditClientTable { width: 100% ; }
+#adminEditClientPadTr , #client_notes { width: 100% ; }
 
 #projectsH2 { text-align: center ; }
 #adminClientProjectsTable , #adminClientProjectsTable input { width: 100% ; }
 #projectsNameTh { width: 200px ; }
 #projectsDestroyTh { width: 200px ; }
-
-#adminEditClientTable { width: 100% ; }
-#adminEditClientPadTr , #client_notes { width: 100% ; }

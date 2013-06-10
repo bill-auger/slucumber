@@ -50,7 +50,7 @@ an 'entity' is ANY inworld agent or object
 an 'messsager' initiator or receiver is ANY agent object or website (EVERY ACTOR)
 a 'timer' initiator is OUR object bot or web (self receiver)
 a 'stateful' initiator is OUR object bot or web (no receiver)
-a 'stateless' reciever is NOT OUR object bot or web
+a 'stateless' receiver is NOT OUR object bot or web
 
 /* special trigger actor kinds */
 a 'timer' trigger has itself as receiver

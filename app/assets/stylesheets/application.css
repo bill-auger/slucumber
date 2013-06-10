@@ -11,3 +11,6 @@
  *= require_self
  *= require_tree .
  */
+
+input.fillTd { width: 100% ; }
+.admin { color: #800 ; }

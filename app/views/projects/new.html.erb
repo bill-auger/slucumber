@@ -1,4 +1,23 @@
 <h1>Create New Project</h1>
 
-<%= render 'form' %>
+<%= form_for(@project) do | project_form | %>
+  <% if @project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+      <ul><% @project.errors.full_messages.each do | msg | %><li><%= msg %></li><% end %></ul>
+    </div>
+  <% end %>
 
+  <div class="actions">
+    <%= submit_tag "Cancel" %>
+    <%= project_form.submit %>
+  </div>
+  <div class="field">
+    Project Name:
+    <%= project_form.text_field :name , :autofocus => true %>
+  </div>
+  <div class="field">
+    Description:
+    <%= project_form.text_field :desc %>
+  </div>
+<% end %>

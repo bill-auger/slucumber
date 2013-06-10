@@ -1,0 +1,5 @@
+
+<%= form_for(@actor , :remote => true , :html => { "data-type" => :json }) do | actor_form | %>
+<%= "When:" %><%= actor_form.select :kind , @actor , { :prompt => "Select " + @actor.class.to_s } , { :onchange => "validateActor(this)" } %>
+  <div class="hidden">Tag:<%= actor_form.text_field :name %><br />
+      <%= "Data:" %><%= actor_form.text_field :data %></div> %>

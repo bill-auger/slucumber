@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Actor do
   before do
     @an_event = FactoryGirl.create(:event)
-    @a_name = "Fred"
-    @a_kind = USER_KIND
+    @a_name = "Fred" ; @a_kind = USER_KIND ;
     @no_name_params = { :kind => @a_kind , :type => "Trigger" , :event_id => @an_event.id }
     @no_kind_params = { :name => @a_name , :type => "Trigger" , :event_id => @an_event.id }
     @no_type_params = { :name => @a_name , :kind => @a_kind , :event_id => @an_event.id }

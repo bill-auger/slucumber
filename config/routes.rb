@@ -1,5 +1,6 @@
 Slucumber::Application.routes.draw do
 
+  #clients
   authenticated :client do
     root :to => 'projects#index'
   end
@@ -11,9 +12,19 @@ Slucumber::Application.routes.draw do
     delete '/logout' => 'devise/sessions#destroy'
   end
   devise_for :clients , :controllers => { :registrations => 'registrations' }
-  resources :projects #clients
+  resources :projects
+resources :actors
+resources :initiators
+resources :triggers
+resources :receivers
+resources :responses
 
-  resources :clients # admins
+  # admins
+  match 'clients' => 'clients#index'
+  match 'clients/:id/edit' => 'clients#edit' , :as => :edit_client
+#  match 'actors/:id/_actor_form.html.erb' => 'actors#edit' , :as => :edit_actor
+  match 'clients/:id' => 'clients#update' , :as => :client
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

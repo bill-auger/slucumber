@@ -1,0 +1,30 @@
+<fieldset>
+
+<% p "_actor_fields.html.erb actor nil" or return unless actor %>
+
+  <% @tag = "" ; @options = ["Select " + actor.class.to_s] ; %>
+  <% case actor.class.to_s %>
+    <% when "Initiator" %>
+      <% @tag = "When:" ; @options = ACTOR_MAP["#{actor.class.to_s.downcase}s".to_sym] %>
+    <% when "Trigger" ; @tag = "Does:" %>
+    <% when "Receiver" ; @tag = "Then:" %>
+    <% when "Response" ; @tag = "Does:" %>
+    <% else "?" %>
+  <% end %>
+
+<% p "_actor_fields.html.erb actor=" + actor.class.to_s + " @kind=" + actor.kind.to_s + " id=" + actor.id.to_s + " new_record?=" + ((actor.respond_to?('new_record?'))? actor.new_record?.to_s : "") %>
+<% trace_js = "console.log('_actor_fields.html.erb onchange id=" + actor.id.to_s + " ok=' + this + '::' + this.value) ;" %>
+<% post_js = "ajaxPost('" + actor.id.to_s + "' , '" + actor.to_json + "' , this) ;" %>
+<% submit_js = "submitNestedForm() ;" %>
+<% onchange_js = trace_js + submit_js %>
+<% onload_js = (actor && actor.event && actor.event.new_record?)? 'window.setTimeout(submitNestedForm , 2000) ;' : "" %>
+<% status = (actor && actor.event)? ((actor.event.new_record?)? "new event" : "event exists") : "no event" %>
+<% onload_js += 'console.log("' + status + '") ;' %>
+<% if @options.empty? %>
+  <%= @tag %><%= event_builder.select :kind , @options , { :onchange => onchange_js } %>
+<% else %>
+  <%= @tag %><%= event_builder.select :kind , @options , { :prompt => "Select " + actor.class.to_s } , { :onchange => onchange_js } %>
+<% end  %>
+<!--   <div>Tag:<%= event_builder.text_field :name , { :onchange => onchange_js } %><br /> -->
+   <div class="hiddenXXX">Data:<%= event_builder.text_field :data , { :onclick => onload_js } %></div>
+</fieldset>

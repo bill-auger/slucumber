@@ -47,6 +47,21 @@ describe ProjectsController do
   end
 
   describe "POST create" do
+    describe "when 'Cancel' button pressed" do
+      it "redirects to the projects page" do
+        post :create , { :commit => "Cancel" , :project => valid_attributes }
+        response.should redirect_to projects_path
+      end
+    end
+
+    describe "when duplicate project name exists" do
+      it "re-renders the new project form" do
+        project = Project.create! valid_attributes
+        post :create , { :project => valid_attributes }
+        response.should render_template :new
+      end
+    end
+
     describe "with valid params" do
       it "creates a new Project" do
         expect { post :create , { :project => valid_attributes }
@@ -59,9 +74,9 @@ describe ProjectsController do
         assigns(:project).should be_persisted
       end
 
-      it "redirects to the created project" do
+      it "redirects to the created project edit page" do
         post :create , { :project => valid_attributes }
-        response.should redirect_to(Project.last)
+        response.should redirect_to edit_project_path(Project.last)
       end
     end
 
@@ -81,53 +96,61 @@ describe ProjectsController do
   end
 
   describe "PUT update" do
+    before do
+      @project = Project.create! valid_attributes
+    end
+
+    describe "when 'Cancel' button pressed" do
+      it "redirects to the projects page" do
+        put :update , { :commit => "Cancel" , :id => @project.to_param , :project => {} }
+        response.should redirect_to projects_path
+      end
+    end
+
     describe "with valid params" do
       it "updates the requested project" do
-        project = Project.create! valid_attributes
         Project.any_instance.should_receive(:update_attributes).with({ "these" => "params" })
-        put :update , { :id => project.to_param , :project => { "these" => "params" } }
+        put :update , { :id => @project.to_param , :project => { "these" => "params" } }
       end
 
       it "assigns the requested project as @project" do
-        project = Project.create! valid_attributes
-        put :update , { :id => project.to_param , :project => valid_attributes }
-        assigns(:project).should eq(project)
+        put :update , { :id => @project.to_param , :project => valid_attributes }
+        assigns(:project).should eq(@project)
       end
 
       it "redirects to the project" do
-        project = Project.create! valid_attributes
-        put :update , { :id => project.to_param , :project => valid_attributes }
-        response.should redirect_to(project)
+        put :update , { :id => @project.to_param , :project => valid_attributes }
+        response.should redirect_to(@project)
       end
     end
 
     describe "with invalid params" do
       it "assigns the project as @project" do
-        project = Project.create! valid_attributes
         Project.any_instance.stub(:save).and_return(false)
-        put :update , { :id => project.to_param , :project => {  } }
-        assigns(:project).should eq(project)
+        put :update , { :id => @project.to_param , :project => {} }
+        assigns(:project).should eq(@project)
       end
 
       it "re-renders the 'edit' template" do
-        project = Project.create! valid_attributes
         Project.any_instance.stub(:save).and_return(false)
-        put :update , { :id => project.to_param , :project => {  } }
+        put :update , { :id => @project.to_param , :project => {} }
         response.should render_template(:edit)
       end
     end
   end
 
   describe "DELETE destroy" do
+    before do
+      @project = Project.create! valid_attributes
+    end
+
     it "destroys the requested project" do
-      project = Project.create! valid_attributes
-      expect { delete :destroy, { :id => project.to_param }
+      expect { delete :destroy, { :id => @project.to_param }
       }.to change(Project, :count).by(-1)
     end
 
     it "redirects to the projects list" do
-      project = Project.create! valid_attributes
-      delete :destroy, { :id => project.to_param }
+      delete :destroy, { :id => @project.to_param }
       response.should redirect_to(projects_url)
     end
   end

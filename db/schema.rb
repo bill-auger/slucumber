@@ -11,16 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130526070520) do
+ActiveRecord::Schema.define(:version => 20130529214023) do
 
   create_table "actors", :force => true do |t|
     t.string   "name"
     t.string   "kind"
     t.text     "data"
     t.string   "type"
-    t.integer  "event_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "event_id"
   end
 
   create_table "admins", :force => true do |t|
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(:version => 20130526070520) do
   add_index "clients", ["unlock_token"], :name => "index_clients_on_unlock_token", :unique => true
 
   create_table "events", :force => true do |t|
-    t.string   "name"
+    t.string   "tag"
     t.text     "notes"
     t.integer  "project_id"
     t.datetime "created_at", :null => false

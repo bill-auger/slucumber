@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe "projects/index" do
   before(:each) do
-    assign(:projects, [ stub_model(Project) , stub_model(Project) ])
+    projects = [ FactoryGirl.create(:project) , FactoryGirl.create(:project) ]
+    assign(:projects , projects)
+    assign(:longest_name , Project.display_projects(projects))
   end
 
   it "renders a list of projects" do

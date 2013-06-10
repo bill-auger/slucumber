@@ -12,15 +12,20 @@ FactoryGirl.define do
         FactoryGirl.create_list(:project , evaluator.n_projects , { :client => client })
       end
     end
+
+    factory(:admin) do
+      sequence(:nick) { | n | "Admin ##{n}" }
+      is_admin true
+    end
   end
 
   factory(:project) do
-    sequence(:name) { | n | "My Really Nifty Project ##{n}" }
+    sequence(:name) { | n | "Project ##{n}" }
     association :client
   end
 
   factory(:event) do
-    sequence(:name) { | n | "When something groovy happens ##{n}" }
+    sequence(:tag) { | n | "Event ##{n}" }
     association :project
   end
 
@@ -44,8 +49,7 @@ FactoryGirl.define do
 
   factory(:response) do
     sequence(:name) { | n | "Response #{n}" }
-    kind CHECK_EMAIL_KIND
+    kind SOUND_KIND
     association :event
   end
-
 end

@@ -6,6 +6,7 @@
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Slucumber" %>">
     <%= stylesheet_link_tag "application" , :media => "all" %>
     <%= javascript_include_tag "application" %>
+    <% javascript_include_tag :defaults %>
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
   </head>
@@ -15,7 +16,7 @@
 
       <header>
         <%= render 'layouts/header' %>
-        <%= render 'layouts/messages' %>
+        <% render 'layouts/messages' %>
       </header>
 
       <div id="main" role="main"><%= yield %></div>

@@ -1,0 +1,13 @@
+
+<% form_id = 'edit_project_' + @project.id.to_s %> ;
+var formId = <%= form_id %> ;
+alert("update.js.erb formId="  + formId) ;
+console.log("update.js.erb formId=" + formId) ; <% p '\nupdate.js.erb formId=' + form_id %>
+//clobberPartial('projects' , 'events_form' , formId , @project) 
+console.log("update.js.erb @partial=" + <%=j @partial %>) ;
+
+$('#edit_project_<%=j @project.id.to_s %>').replaceWith("<%=j @partial %>") ;
+
+//.html(html) ;
+//.replaceWith("<%=j render :partial => 'projects/events_form' %>");
+//.replaceWith("<%= escape_javascript(render :partial => 'projects/events_form') %>");

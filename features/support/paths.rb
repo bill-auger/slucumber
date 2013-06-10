@@ -14,8 +14,17 @@ module NavigationHelpers
     when /Login/
       '/' # '/clients/sign_in'
 
+
+# clients
+
     when /My Projects/
       '/' # '/projects'
+
+    when /New Project/
+      '/projects/new'
+
+
+# admins
 
     when /Clients/
       '/clients'
@@ -26,7 +35,10 @@ module NavigationHelpers
     when /Edit Client (.*)/i
       '/clients/' + $1 + '/edit'
 
-    when /Project (.*)/i
+    when /Edit Project (.*)/i
+      '/projects/' + $1 + "/edit"
+
+    when /Show Project (.*)/i
       '/projects/' + $1
 
     # Add more mappings here.

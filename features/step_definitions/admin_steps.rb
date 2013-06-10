@@ -10,20 +10,22 @@ end
 
 When /^I am on the "Edit Client" page$/ do
   step 'I am on the "Clients" page'
-  step 'I click the client button'
+  step 'I click any "Client" button'
 end
 
 When /^I am on the "Project" page$/ do
   step 'I am on the "Edit Client" page'
-  step 'I click the "Project" button'
+  step 'I click any "Project" button'
 end
 
 
 ### WHEN ###
 
-When(/^I click the client button$/) { click_button @client.nick }
+When(/^I log in with valid admin credentials$/) { new_admin ; sign_in(@admin_params) }
 
-When /^I click the landmark button \(which webrat cant\)$/ do
+# clients view
+
+When /^I click any landmark button \(which webrat cant\)$/ do
   # so we will just make sure that the form action has to the correct url
   landmark_tds = page.find('#clientsTable').all('td.clientLandmarkTd')
   landmark_td = (landmark_tds.select { | td | ; td.first('form.button_to') }).first
@@ -33,6 +35,8 @@ When /^I click the landmark button \(which webrat cant\)$/ do
   click_button @client.landmark
 end
 
+# client view
+
 When /^I update the client details$/ do
   new_other_client
   fill_in 'client_landmark' , :with => @other_client_params[:landmark]
@@ -40,24 +44,55 @@ When /^I update the client details$/ do
   fill_in 'client_notes' , :with => @other_client_params[:notes]
 end
 
-When(/^I click any "Destroy Project" button$/) do
-# TODO: less than ideal - i wanted all named "Destroy Project" - but these are hard to nail down
-  page.find_button("Destroy " + @client.projects.first.name).click
-end
-
-When(/^I click the "(.*?)" link$/) { | text | ; click_link text }
-
-When(/^I click the "(.*?)" button$/) do | btn_text |
-  btns = { "Project" => @client.projects.first.name ,
-           "Client Projects" => @client.nick + " Projects" }
-  click_button btns[btn_text] || btn_text
-#p "btn_text=" + btn_text + " clicking=" + (btns[btn_text] || btn_text)
-end
-
-When(/^I click "(.*?)"$/) { | text | ; click_on text }
-
 
 ### THEN ###
+
+Then /^I should see my name in red in the banner$/ do
+  (page.find('span.adminLogin' , :text => format_nick(@admin))).should_not be_nil
+end
+
+# clients view
+
+Then /^I should see a button with the client name in green$/ do
+  page.should have_button format_nick(@client)
+  begin
+    adminLogin = page.find 'input.adminLogin' , { :text => format_nick(@client) }
+  rescue Capybara::ElementNotFound
+    adminLogin.should be_nil
+  end
+end
+
+Then /^I should see a button with the admin name in red$/ do
+  (adminLoginInput = page.find 'input.adminLogin').should_not be_nil
+  adminLoginInput[:value].should == format_nick(@other_admin)
+end
+
+Then /^I should see a button with the client landmark$/ do
+  page.should have_button @client.landmark
+end
+
+Then /^I should see a column with the client notes$/ do
+  page.should have_content @client.notes
+end
+
+# client view
+
+Then /^I should see a header with the client name$/ do
+  page.has_selector? 'h2' , :text => @client.nick.gsub('.' , ' ')
+end
+
+Then /^I should see a header with the number of projects$/ do
+  page.has_selector? 'th' , :text => @client.projects.size.to_s + " Projects"
+end
+
+Then /^I should see a table with the client projects$/ do
+  @client.projects.each do | project |
+    page.should have_button project.name
+    page.should have_content project.desc
+  end
+end
+
+# project view
 
 Then(/^I should see a header with the project name$/) do
   page.has_selector? 'h2' , :text => @client.projects.first.name

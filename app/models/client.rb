@@ -12,7 +12,6 @@ class Client < ActiveRecord::Base
   validates_presence_of :nick
   validates_presence_of :password , :password_confirmation , { :on => :create }
   validates_confirmation_of :password
-  validates_length_of :password , { :within => Devise.password_length , :on => :create }
   before_validation do
     # NOTE: we send all confirmation email to our inworld object to relay to the client
     #   but devise requires the email field to change for confirmable and recoverable
@@ -21,6 +20,7 @@ class Client < ActiveRecord::Base
     self.landmark ||= "" ; self.notes ||= "" ;
   end
 
+  def admin ; Client.find_by_nick 'me' ; end ;
 
   module Devise::Models::Confirmable
     def send_on_create_confirmation_instructions # on create
@@ -33,5 +33,17 @@ class Client < ActiveRecord::Base
       generate_confirmation_token! if self.confirmation_token.blank?
       SlMailer.sl_email(self).deliver
     end
+  end
+
+
+  def self.display_clients(current_client) # clientLoginTd styling
+    clients = [] ; display_nicks = [] ; longest_named_client = nil ; longest = 0 ;
+    self.all.each do | client | ; next if client == current_client ;
+      curr_nick = client.email.split('@').first ; new_nick = client.nick ;
+      display_nick = (new_nick == curr_nick)? curr_nick : curr_nick + " (" + new_nick + ")"
+      clients << client ; display_nicks << display_nick ; n_chars = display_nick.size ;
+      longest_named_client = client and longest = n_chars if n_chars > longest ;
+    end
+    [clients , display_nicks , longest_named_client]
   end
 end
