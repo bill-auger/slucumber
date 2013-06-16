@@ -9,22 +9,23 @@ def format_nick(nick) ; nick.nick.gsub('.' , ' ') ; end ;
 # dom and page maps
 
 def any_button_text(btn_text)
-  btns = {  "Client"          => @client.nick ,
-            "Project"         => @client.projects.last.name ,
-            "Destroy Project" => "Destroy " + @client.projects.first.name } # TODO: less than ideal - i wanted all named "Destroy Project" - but these are hard to nail down
+  btns = {  'Client'          => @client.nick ,
+            'Project'         => "#{@client.projects.last.name} (#{@client.projects.last.id})" ,
+            'Destroy Project' => "Destroy " + @client.projects.first.name } # TODO: less than ideal - i wanted all named "Destroy Project" - but these are hard to nail down
   btns[btn_text] || btn_text
 end
 
 def the_button_text(btn_text)
-  btns = {  "Client Projects" => @client.nick + " Projects" }
+  btns = { 'Client Projects' => @client.nick + " Projects" ,
+           'Destroy Client'  => "Destroy " + @client.nick }
   btns[btn_text] || btn_text
 end
 
 def the_page_name(page_name)
   case page_name
-    when "Edit Client"  ;  "Edit Client " + @client.id.to_s ;
-    when "Edit Project" ; "Edit Project " + @client.projects.last.id.to_s ;
-    when "Show Project" ; "Show Project " + @client.projects.last.id.to_s ;
+    when 'Edit Client'  ; "Edit Client " + @client.id.to_s ;
+    when 'Edit Project' ; "Edit Project " + @client.projects.last.id.to_s ;
+    when 'Show Project' ; "Show Project " + @client.projects.last.id.to_s ;
     else page_name
   end
 end
@@ -140,8 +141,7 @@ When(/^I click any "(.*?)" button$/) do | btn_text |
 end
 
 When(/^I click the "(.*?)" button$/) do | btn_text |
-  
-#p "current_url=" + current_url + " btn_text=" + btn_text + " clicking=" + (btns[btn_text] || btn_text)
+p "current_url=" + current_url + " btn_text=" + btn_text + " clicking=" + the_button_text(btn_text)
 #dump_html(page.body) if current_url == "http://www.example.com/clients/3/edit"
 
   click_button the_button_text(btn_text)

@@ -48,7 +48,7 @@ describe Event do
       an_event.build_initiator({ :name => "Fred" , :kind => USER_KIND })
       an_event.build_trigger({ :name => "Fred" , :kind => CLICK_KIND })
       an_event.build_receiver({ :name => "Fred" , :kind => OBJECT_KIND })
-      an_event.build_response({ :name => "Fred" , :kind => CHECK_EMAIL_KIND })
+      an_event.build_response({ :name => "Fred" , :kind => EMAIL_KIND })
       an_event.save
     }.to change { Actor.count }.by(4)
     an_event.initiator.should be_kind_of(Initiator)

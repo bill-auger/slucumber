@@ -118,10 +118,10 @@ describe ProjectsController do
         assigns(:project).should eq(@project)
       end
 
-      it "redirects to the project" do
+      it "redirects to the project edit page" do
         put :update , { :id => @project.to_param , :project => valid_attributes }
-        response.should redirect_to(@project)
-      end
+        response.should redirect_to edit_project_path(@project)
+      end unless Project.form_remote?
     end
 
     describe "with invalid params" do
@@ -134,7 +134,7 @@ describe ProjectsController do
       it "re-renders the 'edit' template" do
         Project.any_instance.stub(:save).and_return(false)
         put :update , { :id => @project.to_param , :project => {} }
-        response.should render_template(:edit)
+        response.should redirect_to edit_project_path(@project)
       end
     end
   end

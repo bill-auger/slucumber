@@ -51,7 +51,7 @@ As an Admin I should be able to do admin stuff
 
   Scenario: Admins can delete clients
     When I am on the "Edit Client" page
-      And I click "Destroy Client"
+      And I click the "Destroy Client" button
     Then I should see a client deleted message
       And I should be on the "Clients" page
 

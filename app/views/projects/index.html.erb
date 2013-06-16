@@ -12,8 +12,7 @@
         <%= button_to project.name , project , { :class => css_class , :method => :get } %>
       </td>
 
-<td class="admin">(<%= (current_client.is_admin)? project.id.to_s : "" %>)</td>
-
+      <td class="adminProjectIdTd"><%= (current_client.is_admin)? "(" + project.id.to_s + ")" : "" %></td>
       <td class="projectDescTd"><%= project.desc %></td>
       <td><%= button_to "Update" , edit_project_path(project) , :method => :get %></td>
       <td><%= button_to "Destroy" , project , { :onclick => "return confirm('Are you sure?')" , :method => :delete  } %></td>

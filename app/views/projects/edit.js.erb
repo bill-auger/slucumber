@@ -1,60 +1,18 @@
+// "app/views/actors/edit.js.erb"
 
+var formId = "<%=j (form_id = 'edit_project_' + @project.id.to_s) %>" ;
+<% print "\nedit.js.herb form_id=" + form_id + "\n" %>
 
-// app/views/actors/edit.js.erb
+var theForm = document.getElementById(formId) ;
+console.log("edit.js.erb formId=" + formId + " theForm=" + theForm) ;
+//console.log("edit.js.erb theForm.innerHTML=" + theForm.innerHTML) ;
+var project = "<%=j (@project)? @project.name : 'nil' %>" ;
+console.log("edit.js.erb @project.name=" + project) ;
+console.log("edit.js.erb @partial=<%= @partial %>") ;
 
-var formId = 'edit_project_' + <%= @project.id.to_s %> ;
-console.log("edit.js.erb formId=" + formId) ; <% p 'edit.js.erb formId=' + formId %>
-alert("edit.js.erb formId="  + formId) ; // clobberPartial(controller , formId) ;
-//if n_rows changed clobber page or formId
-
-// $('form').html("<%= escape_javascript render('form') %>") ;
-// $(formId).html('<%= escape_javascript render("events_form") %>') ;
-//$('#partial').replaceWith("<%= escape_javascript(render :partial => 'pdds/partial') %>");
-//$('#actor_form').replaceWith("<%= escape_javascript(render :partial => 'actors/actor_form') %>");
-/*
-function clobberPartial(controller , formId)
-{
-console.log("clobberPartial formId=" + formId + " controller=" + controller) ;
-
-  var html = "<%=j render :partial => controller + '/' + formId %>" ;
-  $('#' + formId).replaceWith(html) ;
-}
-*/
-/*
-views/reviews/create.js.erb
-$("#new_review").before('<div id="flash_notice"><%= escape_javascript(flash.delete(:notice)) %></div>');
-$("#reviews_count").html("<%= pluralize(@review.product.reviews.count, 'Review') %>");
-$("#reviews").append("<%= escape_javascript(render(:partial => @review)) %>");
-$("#new_review")[0].reset();
-*/
-
-
-
-/*
-var el = $('#new-comment-form');
-
-<% if @comment.errors.any? %>
-
-  // Create a list of errors
-  var errors = $('<ul />');
-
-  <% @comment.errors.full_messages.each do |error| %>
-    errors.append('<li><%= escape_javascript( error ) %></li>');
-  <% end %>
-
-  // Display errors on form
-  el.find('.errors').html(errors);
-
-<% else %>
-
-  // We could also render a partial to display the comment here
-  $('#comments').append("<%= escape_javascript(
-      simple_format( @comment.body )
-    ) %>");
-
-  // Clear form
-  el.find('input:text,textarea').val('');
-  el.find('.errors').empty();
-
-<% end %>
-*/
+//theForm.innerHTML = "< % =j @partial % >" ;
+//console.log("edit.js.erb theForm.parentNode=" + theForm.parentNode) ;
+//var parentInnerHTML = theForm.parentNode.innerHTML ;
+//theForm.parentNode.innerHTML = "<%= escape_javascript @partial %>" ;
+//console.log("changed?=" + (parentInnerHTML != theForm.parentNode.innerHTML)) ;
+//theForm.innerHTML("< % = escape_javascript(render :partial => 'projects/events_form') % >") ;

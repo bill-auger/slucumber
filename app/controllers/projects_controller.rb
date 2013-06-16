@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
         format.html { render action: "new"  , :status => "Project already exists with that name" }
         format.json { render :json => @project.errors , :status => "Project already exists with that name" }
       elsif @project.save
-        format.html { redirect_to edit_project_url(@project) , :notice => 'Project was successfully created.' }
+        format.html { redirect_to edit_project_url(@project) , :notice => "Project was successfully created." }
         format.json { render :json => @project , :status => :created , :location => @project }
       else
         format.html { render action: "new" }
@@ -139,6 +139,42 @@ def dbg_events
   dbg = " n_projects=" + Project.count.size.to_s + " n_events=" + @project.events.size.to_s + " [ "
   @project.events.each { | ev | dbg += ev.id.to_s + " , " } ; dbg + " ]" ;
 end ;
+
+  def update
+    @project = Project.find(params[:id])
+print "\n\n\n\nProjects>>update params[:commit]=" + params[:commit].to_s + " project.id=" + params[:id].to_s + "\n"
+
+    if params[:commit] == "Cancel"
+      respond_to do | format |
+        format.html { redirect_to projects_path }
+        format.json { head :no_content }
+      end
+    elsif params[:commit] == "Save" || true # && @project.update_attributes(params[:project])
+p "Projects>>update update_attributes  IN=" + dbg_events ; first = @project.events.first ;
+      if @project.update_attributes(params[:project])
+p "Projects>>update update_attributes OUT=" + dbg_events + " Project update ok"
+        @partial = (render :partial => 'events_form' , :object => @project).first.to_s
+print "\nProjects>>update @partial=\n" + @partial + "\n"
+#print "\nProjects>>update @partial=\n" + @partial[0..30] + "\n"
+#tag_btn_text = "1234567890" ; @partial.gsub!(">#{tag_btn_text}<" , ">CLOBBERED<") ;
+        respond_to do | format |
+          format.json { @partial }
+          format.html { raise "wtf" }
+        end
+      else
+p "Projects>>update update_attributes OUT=" + dbg_events + " Project update fail."
+        respond_to do | format |
+          format.html { render action: "edit" }
+          format.json {}
+        end
+      end
+    else
+p "Projects>>update update_attributes OUT=" + dbg_events + " Project update invalid"
+      format.html { redirect_to edit_project_path(@project) , { :notice => "Project was successfully updated." } }
+      format.json { head :no_content }
+    end
+  end
+=begin
   def update
     @project = Project.find(params[:id])
 print "\n\n\n\nProjects>>update params[:commit]=" + params[:commit].to_s + " project.id=" + params[:id].to_s + "\n"
@@ -152,35 +188,54 @@ print "\n\n\n\nProjects>>update params[:commit]=" + params[:commit].to_s + " pro
 p "Projects>>update update_attributes  IN=" + dbg_events ; first = @project.events.first ;
 #(p "Projects>>update update_attributes first initiator  IN=" + first.initiator.id.to_s + " trigger="  + first.trigger.id.to_s + " receiver="  + first.receiver.id.to_s + " response="  + first.response.id.to_s) unless first.nil? || first.id.nil?
         if @project.update_attributes(params[:project])
-p "Projects>>update update_attributes OUT=" + dbg_events
+#p "Projects>>update update_attributes OUT=" + dbg_events
 #(p "Projects>>update update_attributes first initiator OUT=" + first.initiator.id.to_s + " trigger="  + first.trigger.id.to_s + " receiver="  + first.receiver.id.to_s + " response="  + first.response.id.to_s) unless first.nil? || first.id.nil?
 #@project.events.first.trigger.data = ":)" ; @project.save ;
-id = @project.id.to_s ; @partial = (render :html => { :partial => 'events_form' , :object => @project }).first ;
+
+# NOTE: rend = (render :html => { :partial => 'events_form' , :object => @project })
+#rend = (render :action => :edit , :format => :html)
+#p "rend.class=" + rend.class.to_s + " rend.first.class=" + rend.first.class.to_s ;
+#=begin
+id = @project.id.to_s
+@partial = (render :html => { :partial => 'events_form' , :object => @project }).first.to_s
+#@partial = (render :action => :edit , :format => :html).first.to_s
+#@partial = (render :action => :update , :format => :html).to_s
+#@partial = (render 'projects/events_form').first.to_s
+print "\nProjects>>update update_attributes @partial=\n" + @partial + "\n"
+@partial.gsub!(">1234567890<" , ">YAY<")
+#=end
 #          format.html { redirect_to edit_project_path(@project) , { :notice => 'Project was successfully updated.' } }
 #          format.json { 'console.log("' + (render "events_form") + '") ;' }
           format.json {}
+#format.html { render :partial => 'events_form' , :object => @project ; return ; }
+#format.html { raise "wtf" }
+#          format.json { render :json => 'document.getElementById("edit_project_' + @project.id.to_s + '").innerHTML = "' + @partial + '" ;'; }
+#          format.json { render :json => 'console.log("' + (render @project) + '");' }
+#          format.json { render :json => 'console.log("' + @partial + '");' }
 #          format.html { render action: "edit" }
 #          format.json { 'renderEventsForm(' + @project.id.to_s + ' , "' + (render :action => :edit) + '") ;' }
           #format.json { 'renderEventsForm(' + id + ' , "' + partial + '") ;' }
-=begin
-format.json {
-p "Projects>>update json id=" + id
-'$("#" + "events_form_" + id).replaceWith("' + (render :json => { :partial => 'events_form' , :object => @project }).first + '") ;'
-'$("#" + "events_form_" + id).replaceWith("<div>hello</div>") ;' }
-=end
+
+# format.json {
+# p "Projects>>update json id=" + id
+# '$("#" + "events_form_" + id).replaceWith("' + (render :json => { :partial => 'events_form' , :object => @project }).first + '") ;'
+# '$("#" + "events_form_" + id).replaceWith("<div>hello</div>") ;' }
+
 # 'renderEventsForm(' + id + ' , "' + partial + '") ;' }
         else
-#          format.html { render action: "edit" }
-format.html { redirect_to edit_project_path(@project) , { :notice => 'Project save fail.' } }
-          format.json { render json: @project.errors , status: :unprocessable_entity }
+p "Projects>>update update_attributes OUT=" + dbg_events + " Project save fail."
+          format.html { render action: "edit" }
+#format.html { redirect_to edit_project_path(@project) , { :notice => "Project save fail." } }
+#          format.json { render json: @project.errors , status: :unprocessable_entity }
+format.json {}
         end
       else
-        format.html { redirect_to edit_project_path(@project) , { :notice => 'Project was successfully updated.' } }
+        format.html { redirect_to edit_project_path(@project) , { :notice => "Project was successfully updated." } }
         format.json { head :no_content }
       end
     end
   end
-
+=end
   def destroy
     @project = Project.find(params[:id])
     @project.destroy
@@ -188,7 +243,7 @@ format.html { redirect_to edit_project_path(@project) , { :notice => 'Project sa
     respond_to do |format|
       format.html do
         url = (@admin)? (edit_client_path @project.client_id) : projects_url
-        redirect_to url , notice: 'Project was successfully deleted.'
+        redirect_to url , notice: "Project was successfully deleted."
       end
       format.json { head :no_content }
     end

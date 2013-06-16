@@ -10,7 +10,7 @@
 
   <div id="adminEditClientBtns" class="actions">
     <%= client_form.submit %>
-    <%= submit_tag "Destroy Client" , { :confirm => "return confirm('Are you sure?')" } %>
+    <%= submit_tag "Destroy #{@client.nick}" , { :confirm => "return confirm('Are you sure?')" } %>
     <%= submit_tag "Back" %>
   </div>
   <table id="adminEditClientTable" class="field">
@@ -36,7 +36,7 @@
   <% end %>
   <% @client.projects.each do | project | %>
     <tr>
-      <td><%= button_to project.name , project_path(project) , :method => :get %></td>
+      <td><%= button_to ("#{project.name} (#{project.id})"), project_path(project) , :method => :get %></td>
       <td><%= button_to "Destroy " + project.name , project , { :onclick => "return confirm('Are you sure?')" , :method => :delete  } %></td>
       <td><%= project.desc %></td>
     </tr>

@@ -17,8 +17,8 @@ class ClientsController < ApplicationController
       format.html do
         if params[:commit] == "Back"
           redirect_to clients_url
-        elsif params[:commit] == "Destroy Client" ; @client.destroy ;
-          redirect_to redirect_to edit_client_url(@client) , :notice => "Client was successfully destroyed."
+        elsif params[:commit] == "Destroy " + @client.nick ; @client.destroy ;
+          redirect_to clients_url , :notice => "Client was successfully destroyed."
         elsif @client.update_attributes(params[:client])
           redirect_to edit_client_url(@client) , :notice => "Client was successfully updated."
         else

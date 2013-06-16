@@ -1,6 +1,6 @@
 
-<%= nested_form_for @project , :remote => true , :html => { 'data-type' => 'script' } do | project_form | %>
-  
+<!-- < % = nested_form_for @project , :remote => true , :html => { 'data-type' => 'script' } do | project_form | % > -->
+<%= nested_form_for @project , :remote => true do | project_form | %>
   <div id="projectEditBtnsDiv" class="actions">
     <%= submit_tag "Cancel" %>
     <%= project_form.submit %>
@@ -49,51 +49,30 @@
           <%= event_builder.link_to_remove(:class => "remove_event" , :href => "#" , :confirm => "Are you sure?") do %>
             <% btn = "X" + ((current_client.is_admin && event.id)? " (" + event.id.to_s + ")" : "") %>
             <%= button_tag btn , :type => 'button' %><% end %></td>
-        <td class="projectEventTagTd">
-          <% onchange = "
-              var tagTextDiv = this.parentNode ;
-              var tagBtnDiv = tagTextDiv.parentNode.children[1] ;
-              var tagBtn = tagBtnDiv.children[0] ;
-console.log('this.id=' + tagBtn.innerHTML) ;
-              tagBtn.innerHTML = this.value ;
-              tagTextDiv.style.display = 'none' ;
-              tagBtnDiv.style.display = 'block' ;" %>
-          <% onclick = "
-              var tagBtnDiv = this.parentNode ;
-              var tagTextDiv = tagBtnDiv.parentNode.children[0] ;
-              tagBtnDiv.style.display = 'none' ;
-              tagTextDiv.style.display = 'block' ;
-              tagTextDiv.firstChild.focus() ;" %>
-          <div class="eventTagTextDiv"><%= event_builder.text_field :tag , { :onchange => onchange } %></div>
-          <div class="eventTagBtnDiv"><%= button_tag event.tag , { :type => 'button' , :onclick => onclick } %></div>
-          <%= event_builder.text_field :notes %></td>
 
+        <td class="projectEventTagTd">
+          <% toggle_js = 'toggleTagInput(this) ;' ; submit_js = 'submitNestedForm() ;' ; %>
+          <% onTagTextChange = (onTagBtnClick = toggle_js) + submit_js ; %>
+          <div class="eventTagTextDiv"><%= event_builder.text_field :tag , { :onchange => onTagTextChange } %></div>
+          <div class="eventTagBtnDiv"><%= button_tag event.tag , { :type => 'button' , :onclick => onTagBtnClick } %></div>
+          <div class="eventNotesDiv"><%= event_builder.text_field :notes , { :onchange => onTagTextChange } %></div></td>
         <td class="projectEventInitiatorTd">
-  <% (actor = initiator) %>
-  <%= event_builder.fields_for :initiator , :wrapper => false do | initiator_builder | %>
-    <%= render 'actor_fields' , :event_builder => initiator_builder , :actor_class => 'Initiator' %>
-  <% end %>
-        </td>
+          <%= event_builder.fields_for :initiator , :wrapper => false do | initiator_builder | %>
+            <%= render 'actor_fields' , :event_builder => initiator_builder , :actor_key => :initiators %>
+          <% end %></td>
         <td class="projectEventTriggerTd">
-  <% (actor = trigger) %>
-  <%= event_builder.fields_for :trigger , :wrapper => false do | trigger_builder | %>
-    <%= render 'actor_fields' , :event_builder => trigger_builder , :actor_class => 'Trigger' %>
-  <% end %>
-          </td>
+            <%= event_builder.fields_for :trigger , :wrapper => false do | trigger_builder | %>
+            <%= render 'actor_fields' , :event_builder => trigger_builder , :actor_key => :triggers %>
+          <% end %></td>
         <td class="projectEventReceiverTd">
-  <% (actor = receiver) %>
-  <%= event_builder.fields_for :receiver , :wrapper => false  do | receiver_builder | %>
-    <%= render 'actor_fields' , :event_builder => receiver_builder , :actor_class => 'Receiver' %>
-  <% end %>
-          </td>
+          <%= event_builder.fields_for :receiver , :wrapper => false  do | receiver_builder | %>
+            <%= render 'actor_fields' , :event_builder => receiver_builder , :actor_key => :receivers %>
+          <% end %></td>
         <td class="projectEventResponseTd">
-  <% (actor = response) %>
-  <%= event_builder.fields_for :response , :wrapper => false do | response_builder| %>
-    <%= render 'actor_fields' , :event_builder => response_builder , :actor_class => 'Response' %>
-  <% end %>
-        </td>
+          <%= event_builder.fields_for :response , :wrapper => false do | response_builder| %>
+            <%= render 'actor_fields' , :event_builder => response_builder , :actor_key => :responses %>
+          <% end %></td>
       </tr>
-      <tr class="projectEventSpacerTr"><td colspan="6">&nbsp;</td></tr>
     <% end %>
 
     <tr><td><%= project_form.link_to_add :events , :class => "add_nested_fields" do %>

@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe "projects/index" do
   before(:each) do
-    projects = [ FactoryGirl.create(:project) , FactoryGirl.create(:project) ]
+    login_client
+    client_attributes = { :client_id => subject.current_client.id }
+    projects = [ FactoryGirl.create(:project , client_attributes) , FactoryGirl.create(:project , client_attributes) ]
     assign(:projects , projects)
     assign(:longest_name , Project.display_projects(projects))
   end

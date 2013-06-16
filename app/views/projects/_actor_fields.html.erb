@@ -1,26 +1,20 @@
 <fieldset>
-  <% p "_actor_fields.html.erb actor nil" or return unless actor_class %>
-  <legend style="padding: 0.0em 0.2em ;"><%= actor_class %>:</legend>
+<% p "_actor_fields.html.erb actor_key nil" unless ACTOR_MAP.keys.include? actor_key %>
+  <% return unless ACTOR_MAP.keys.include? actor_key %>
 
-    <% @options = ["Select " + actor_class.to_s] ; %>
-    <% case actor_class.to_s %>
-      <% when "Initiator" %>
-        <% @options = ACTOR_MAP["#{actor_class.to_s.downcase}s".to_sym] %>
-      <% when "Trigger" ; tag = "Does:" %>
-      <% when "Receiver" ; tag = "Then:" %>
-      <% when "Response" ; tag = "Does:" %>
-      <% else "?" %>
-    <% end %>
+<% p "_actor_fields.html.erb actor=" + actor_key.to_s %>
+  <% actor_map = ACTOR_MAP[actor_key] %>
+  <% label = actor_map[:label] %>
+  <% options = actor_map[:options][:default] %>
+<% p "_actor_fields.html.erb actor_map=" + actor_map.class.to_s + " label=" + label + " options=" + options.to_s %>
 
-  <% p "_actor_fields.html.erb actor=" + actor_class.to_s %>
-  <% trace_js = "console.log('_actor_fields.html.erb onchange actor_class=" + actor_class.to_s + " ok=' + this + '::' + this.value) ;" %>
-  <% submit_js = "submitNestedForm(" + @project.id.to_s + ") ;" %>
-  <% onclick_js = trace_js + submit_js %>
+  <% trace_js = 'console.log("_actor_fields.html.erb onchange actor_key=' + actor_key.to_s + ' ok=" + this + "::" + this.value) ;' %>
+  <% submit_js = 'submitNestedForm() ;' %>
   <% onchange_js = trace_js + submit_js %>
-  <% if @options.empty? %>
-    <%= event_builder.select :kind , @options , { :onchange => onchange_js } %>
-  <% else %>
-    <%= event_builder.select :kind , @options , { :prompt => "Select " + actor_class.to_s } , { :onchange => onchange_js , :autocomplete => 'off' } %>
-  <% end  %>
-    <div class="hiddenXXX"><%= event_builder.text_field :data , { :onclick => onclick_js } %></div>
+
+  <legend style="padding: 0.0em 0.2em ;"><%= label %></legend>
+
+  <div><%= event_builder.select :kind , options , {} , { :onchange => onchange_js } %></div>
+
+  <div class="hiddenXXX"><%= event_builder.text_field :data , { :onchange => onchange_js } %></div>
 </fieldset>

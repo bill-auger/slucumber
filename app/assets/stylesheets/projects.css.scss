@@ -1,0 +1,35 @@
+// Place all the styles related to the Project controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body { font-family: Monospace ; }
+/*button { height: 2.5em ; }*/
+#projectsH2 { text-align: center ; }
+#projectsTable , .projectDescTd { width: 100% ; }
+#projectsTable td { padding: 5px ; }
+
+#projectH1 , #projectH3 , #projectEditBtnsDiv { text-align: center ; }
+table#project_events , textarea#project_notes { width: 100% ; }
+table#project_events { border-collapse: collapse ; }
+table#project_events td { vertical-align: top ; white-space: nowrap ; }
+.eventTagTextDiv { display: none ; }
+.projectEventTr { border: 1px solid #080 ; border-spacing: 0 1em ; background-color: #030 ; }
+.projectEventTr span button , .projectEventDiv span select ,.projectEventDiv span input { width: 100% ; }
+.projectEventSpacerTr { line-height: 5px ; }
+.adminProjectIdTd { color: #f00 }
+/*
+.projectEventDiv fieldset , .projectEventDiv span { width: 25% ; }
+.projectEventDiv select , .projectEventDiv input { width: 100% ; }
+.projectEventDiv
+
+.projectEventTable , .projectEventTagTable { width: 100% ; }
+.projectEventActorsTable td select , .projectEventActorsTable td input { width: 100% ; }
+.projectEventTagTable td input { width: 99% ; }
+.projectEventTagTd  { width: 100px ; }
+.projectEventTagLblTd , .projectEventNotesLblTd { width: 1px ; }
+*/
+/*.projectEventNotesTd { width: 100% ; }*/
+/*
+.eventTagTextDiv { display: none ; }
+.eventTagBtnDiv { overflow: hidden ; }
+*/

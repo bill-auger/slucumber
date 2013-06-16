@@ -44,6 +44,6 @@ end
 # project view
 
 Then(/^I should see a row for each event$/) do
-  n_rows = @client.projects.last.events.size + 1 # "Add Event" button is always the last row
+  n_rows = (@client.projects.last.events.size * 2) + 1 # each has spacer row ; "Add Event" button is always the last row
   find_by_id('project_events').all('tr').size.should be n_rows
 end

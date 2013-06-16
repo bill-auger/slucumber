@@ -5,17 +5,39 @@
     <td id="siteTitleTd">Slucumber</td>
     <td id="loginTd">
       <% if client_signed_in? %>
+        <% admin = current_client.is_admin %>
         <% nick = current_client.nick.gsub('.' , ' ') %>
-        <% if (current_client.is_admin) %>
-          <span class="adminLogin"><%= nick %></span>
-        <% else %>
-          <%= nick %>
+        <% login_css_id = (admin)? 'adminLoginSpan' : 'clientLoginSpan' %>
+        <% client = nil ; link_text = current_data = "" ; %>
+
+        <% if admin %>
+          <% if @project %>
+            <% client = @project.client %>
+            <% link_text = "Edit #{client.nick}" ; path = edit_client_path client ; %>
+            <% current_data = "#{@project.name} (#{@project.id})" %>
+          <% elsif @client %>
+            <% client = @client %>
+            <% link_text = 'Clients' ; path = clients_path ; %>
+            <% current_data = "#{@client.nick} (#{@client.id})" %>
+          <% end %>
+        <% elsif @project %>
+            <% link_text = 'My Projects' ; path = projects_path ; %>
+            <% current_data = @project.name %>
         <% end %>
-        <%= link_to 'Settings' , '/settings' %>
-        <%= link_to('Logout' , '/logout' , :method => :delete) %>
+
+        <span id="navSpan">
+          <%= ((current_data.nil?)? "" : current_data) %>
+          <%= link_to link_text , path unless path.nil? %>
+          <%= (admin && client)? " (#{client.id})" : "" %></span>
+        <span id="loginSpan">
+          <span id="<%= login_css_id %>"><%= nick %></span>
+          <%= link_to 'Settings' , '/settings' %>
+          <%= link_to('Logout' , '/logout' , :method => :delete) %>
+        </span>
       <% else %>
-        <%= link_to('Login' , '/login') %>
-        <%= link_to 'Sign up' , '/signup' %>
+        <span id="loginSpan">
+          <%= link_to('Login' , '/login') %><%= link_to 'Sign up' , '/signup' %>
+        </span>
       <% end %>
     </td>
   </tr>

@@ -38,7 +38,7 @@ describe ClientsController do
 
     describe "when 'Destroy Client' button pressed" do
       it "destroys the client and redirects to the clients page" do
-        expect { put :update , { :commit => "Destroy Client" , :id => @a_client.id , :client => {} }
+        expect { put :update , { :commit => "Destroy #{@a_client.nick}" , :id => @a_client.id , :client => {} }
             }.to change { Client.count }.by -1
         response.should redirect_to clients_path
       end

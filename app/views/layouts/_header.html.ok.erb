@@ -1,0 +1,28 @@
+
+<table id="headerTable">
+  <tr>
+    <td id="messagesTd"><%= render 'layouts/messages' %></td>
+    <td id="siteTitleTd">Slucumber</td>
+    <td id="loginTd">
+      <% if client_signed_in? %>
+        <% nick = current_client.nick.gsub('.' , ' ') %>
+        <% admin = current_client.is_admin %>
+        <% if @project %>
+          <span class="projectName"><%= @project.name + ((admin)? " (#{@project.id})" : "") %></span>
+        <% elsif @client && @client == current_client %>
+          <span class="clientName">(<%= @client.id %>)</span>
+        <% elsif @client && @client != current_client && admin %>
+          <span class="clientName"><%= @client.nick %></span>
+        <% end %>
+        <% css_class = (admin)? 'adminLoginSpan' : 'clientLoginSpan' %>
+        <span class="<% css_class %>"><%= nick %></span>
+        <%= link_to 'My Projects' , '/projects' %>
+        <%= link_to 'Settings' , '/settings' %>
+        <%= link_to('Logout' , '/logout' , :method => :delete) %>
+      <% else %>
+        <%= link_to('Login' , '/login') %>
+        <%= link_to 'Sign up' , '/signup' %>
+      <% end %>
+    </td>
+  </tr>
+</table>

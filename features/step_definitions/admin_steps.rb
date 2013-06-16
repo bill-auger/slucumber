@@ -48,7 +48,7 @@ end
 ### THEN ###
 
 Then /^I should see my name in red in the banner$/ do
-  (page.find('span.adminLogin' , :text => format_nick(@admin))).should_not be_nil
+  (page.find('span#adminLoginSpan' , :text => format_nick(@admin))).should_not be_nil
 end
 
 # clients view
@@ -64,7 +64,7 @@ end
 
 Then /^I should see a button with the admin name in red$/ do
   (adminLoginInput = page.find 'input.adminLogin').should_not be_nil
-  adminLoginInput[:value].should == format_nick(@other_admin)
+  adminLoginInput[:value].should == "#{format_nick(@other_admin)} (#{@other_admin.id})"
 end
 
 Then /^I should see a button with the client landmark$/ do

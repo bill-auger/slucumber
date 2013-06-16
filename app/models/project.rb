@@ -40,6 +40,8 @@ dbgevents "project.rb after_create OUT n_events="
 
   def admin? ; self.is_admin ; end ;
 
+  def self.form_remote? ; true ; end ;
+
   def self.display_projects(projects) # projectNameTd styling
     longest_name = "" ; longest = 0 ;
     projects.each do | project |

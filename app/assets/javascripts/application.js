@@ -16,26 +16,24 @@
 //= require_tree .
 
 
-//$(window).unload(function() { $('select option').remove() ; }) ;
+//$(function()
+$(document).ready(function() { registerAjaxSuccess() ; }) ;
 
-function submitNestedForm(projectId)
+$(document).ready(function()
 {
-//put() ; return ;
-  var projectForm = document.getElementsByClassName('edit_project')[0] ;
-  var projectFormId = document.getElementById('edit_project_' + projectId) ;
-console.log("submitNestedForm() projectId=" + projectId + " projectForm=" + projectForm + " projectFormId=" + projectFormId) ;
-console.log("submitNestedForm() projectForm(class)=" + projectForm) ;
-console.log("submitNestedForm() projectForm(   id)=" + projectFormId) ;
-console.log("submitNestedForm() (projectForm(class) == projectForm(id))?=" + (projectForm == projectFormId)) ;
-/*
-  projectFormId.on('ajax:complete' , function(event , data , status , xhr)
-  {
-console.log("submitNestedForm() callback status=" + status) ;
-console.log('submitNestedForm() callback html=<div>Title: ' + data.title + '</div>' +'<div>Body: ' + data.body + '</div>');
+console.log('registering ajax:complete callback') ;
 
-    $(this).replaceWith('<div>Title: ' + data.title + '</div>' +'<div>Body: ' + data.body + '</div>');
+  $('.edit_project').on('ajax:complete' , function(event , data , status , xhr)
+  {
+if (status == 'success') return ;
+console.log('\najax:complete() status=' + status + ' event=' + event + ' data=' + data + ' xhr=' + xhr) ;
+console.log("ajax:complete() " + ((!data.body)? "data=" + data :
+    "html=Title: " + data.title + "<br />Body: " + data.body) + "\n") ;
+
+//    $(this).replaceWith('<div>Title: ' + data.title + '</div>' +'<div>Body: ' + data.body + '</div>');
   }) ;
-*/
+}) ;
+
 /* Then, my JQuery to submit form on change:
   $(function() {
     $('.status_update').live('change', function() {
@@ -43,20 +41,84 @@ console.log('submitNestedForm() callback html=<div>Title: ' + data.title + '</di
     });
   });
 */
-  projectFormId.submit ;
+
+
+function registerAjaxSuccess()
+{
+console.log('registering ajax:success callback') ;
+
+//var projectForm = document.getElementsByClassName('edit_project')[0] ;
+var projectFormDiv = document.getElementById('projectFormDiv') ;
+//  $('form[data-update-target]').on('ajax:success' , function(event , data , status , xhr)
+  $('.edit_project').on('ajax:success' , function(event , data , status , xhr)
+  {
+console.log('\najax:success() status=' + status + ' event=' + event + ' data=' + data.substring(0 , 30) + ' xhr=' + xhr + "\n") ;
+console.log('ajax:success() target=' + $('#' + $(this).data('update-target'))) ;
+//      $('#' + $(this).data('update-target')).html(data) ;
+//      $('#' + $(this).data('update-target')).innerHTML = 'data' ;
+//      projectForm.parentNode.parentNode.innerHTML = 'data' ; registerAjaxSuccess() ;
+      projectFormDiv.innerHTML = data ; registerAjaxSuccess() ;
+  }) ;
+}
+
+function toggleTagInput(thisInput)
+{
+  var thisDiv = thisInput.parentNode ; var parentTd = thisDiv.parentNode ;
+  var tagTextDiv = parentTd.getElementsByClassName('eventTagTextDiv')[0] ;
+  var tagBtnDiv = parentTd.getElementsByClassName('eventTagBtnDiv')[0] ;
+
+//console.log("toggleTagInput() " + ((thisDiv == tagBtnDiv)? 'tagBtn=' + thisInput.innerHTML : ((thisDiv == tagTextDiv)? 'textBtn=' + thisInput.value : "err="))) ;
+
+  if (thisDiv == tagBtnDiv)
+  {
+    tagBtnDiv.style.display = 'none' ;
+    tagTextDiv.style.display = 'block' ;
+    tagTextDiv.firstChild.focus() ;
+  }
+  else if (thisDiv == tagTextDiv)
+  {
+    var tagBtn = tagBtnDiv.children[0] ;
+    tagBtn.innerHTML = thisInput.value ;
+    tagTextDiv.style.display = 'none' ;
+    tagBtnDiv.style.display = 'block' ;
+  }
+}
+
+function submitNestedForm()
+{
+//put() ; return ;
+  var projectForm = document.getElementsByClassName('edit_project')[0] ;
+console.log("submitNestedForm() projectForm=" + projectForm) ;
+//  var projectFormById = document.getElementById('edit_project_' + projectId) ;
+//console.log("submitNestedForm() projectId=" + projectId + " projectForm=" + projectForm + " projectFormById=" + projectFormById) ;
+  //console.log("submitNestedForm() projectForm(class)=" + projectForm) ;
+//console.log("submitNestedForm() projectForm(   id)=" + projectFormById) ;
+//console.log("submitNestedForm() (projectForm(class) == projectForm(id))?=" + (projectForm == projectFormById)) ;
+
+//  projectFormById.submit() ;
+    clickSubmitBtn() ;
+/*
+    $.ajax({
+      type: "POST",
+      url: "bin/process.php",
+      data: dataString,
+      success: function() {
+        $('#contact_form').html("<div id='message'></div>");
+        $('#message').html("<h2>Contact Form Submitted!</h2>")
+        .append("<p>We will be in touch soon.</p>")
+        .hide()
+        .fadeIn(1500, function() {
+          $('#message').append("<img id='checkmark' src='images/check.png' />");
+        });
+      }
+    });
+*/
 }
 
 function clickSubmitBtn()
-{
-  var submitBtn = document.getElementById('projectEditBtnsDiv').children[1] ;
-  submitBtn.on('ajax:complete' , function(event , data , status , xhr)
-  {
-console.log("clickSubmitBtn() callback status=" + status) ;
-console.log('clickSubmitBtn() callback html=<div>Title: ' + data.title + '</div>' +'<div>Body: ' + data.body + '</div>');
-  }) ;
-  submitBtn.click ;
-}
+  { document.getElementById('projectEditBtnsDiv').children[1].click() ; }
 
+/*
 function ajaxPost(actorId , actorJson , anInput)
 {
   var actorUrl = "actors/" + actorId + "/edit" ;
@@ -70,15 +132,18 @@ console.log('ajaxPost callback data=" + data + " title=' + data.title + ' body='
   } }) ;
 }
 
-function put()
+function ajaxPutProject(params)
 {
-  $.ajax({ type: 'PUT' , url: '/projects/34' , data: '{}', success: function (data)
+  $.ajax({ type: 'PUT' , url: '/projects/34' , data: params , success: function (data)
   {
 console.log('ajaxPost callback data=" + data + " title=' + data.title + ' body=' + data.body) ;
   } }) ;
 }
-
+function put() { ajaxPutProject('{}') ; }
 //<%= '<script type="text/javascript">window.setTimeout(submitNestedForm , 5000) ;</script>' if event.new_record? %>
+*/
+
+//$(window).unload(function() { $('select option').remove() ; }) ;
 
 /*
  
